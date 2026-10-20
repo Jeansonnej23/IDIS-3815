@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Risks & Resilience in Transportation & Supply Chains</title>
+    <title>Course Module • IDIS 3815</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -25,13 +25,6 @@
                             700: '#035485',
                             800: '#075985',
                             900: '#0c4a6e',
-                        },
-                        cyber: {
-                            red: '#ef4444',
-                            amber: '#f59e0b',
-                            green: '#10b981',
-                            dark: '#0f172a',
-                            slate: '#1e293b'
                         }
                     },
                     fontFamily: {
@@ -49,7 +42,7 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f172a;
+            background: rgba(15, 23, 42, 0.6);
         }
         ::-webkit-scrollbar-thumb {
             background: #334155;
@@ -58,351 +51,383 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #0284c7;
         }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
+
+        /* Dark / Light Glass Panels */
+        .dark .glass-panel {
+            background: rgba(30, 41, 59, 0.75);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #f1f5f9;
         }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            color: #0f172a;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        }
+
         .gradient-text {
+            background: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dark .gradient-text {
             background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Light/Dark Mode Smooth Transitions */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-white">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-white min-h-screen flex flex-col">
 
-    <!-- Top Progress Bar -->
-    <div class="fixed top-0 left-0 right-0 h-1 bg-slate-800 z-50">
+    <!-- TOP FIXED NAVBAR -->
+    <header class="fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-50 px-4 md:px-8 flex items-center justify-between transition-colors">
+        <div class="flex items-center space-x-3">
+            <div class="p-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-600 dark:text-sky-400">
+                <i class="fa-solid fa-shield-halved text-lg"></i>
+            </div>
+            <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-widest text-sky-600 dark:text-sky-400">Logistics Program</span>
+                <h1 class="text-sm md:text-base font-bold text-slate-900 dark:text-white leading-tight">Course Module • IDIS 3815</h1>
+            </div>
+        </div>
+
+        <!-- Quick Links Desktop -->
+        <nav class="hidden lg:flex items-center space-x-6 text-xs font-semibold text-slate-600 dark:text-slate-300">
+            <a href="#role-transport" class="hover:text-sky-600 dark:hover:text-sky-400 transition">1. Role</a>
+            <a href="#modes" class="hover:text-sky-600 dark:hover:text-sky-400 transition">2. Primary Modes</a>
+            <a href="#planning-execution" class="hover:text-sky-600 dark:hover:text-sky-400 transition">3. Planning</a>
+            <a href="#tms-strategies" class="hover:text-sky-600 dark:hover:text-sky-400 transition">4. Strategies</a>
+            <a href="#analytics-calculator" class="hover:text-sky-600 dark:hover:text-sky-400 transition">5. Metrics</a>
+            <a href="#it-cybersecurity" class="hover:text-sky-600 dark:hover:text-sky-400 transition">6. IT Architecture</a>
+            <a href="#case-studies" class="hover:text-sky-600 dark:hover:text-sky-400 transition">7. Case Studies</a>
+            <a href="#interactive-sim" class="hover:text-sky-600 dark:hover:text-sky-400 transition">8. Audit & Quiz</a>
+        </nav>
+
+        <!-- THEME TOGGLE BUTTON -->
+        <div class="flex items-center space-x-3">
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 border border-slate-300 dark:border-slate-700 hover:ring-2 hover:ring-sky-500 transition flex items-center space-x-2 text-xs font-bold shadow-sm" aria-label="Toggle Theme">
+                <i id="themeIcon" class="fa-solid fa-moon text-base"></i>
+                <span id="themeLabel" class="hidden sm:inline">Dark Mode</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Reading Progress Bar -->
+    <div class="fixed top-16 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-800 z-50">
         <div id="readingProgress" class="h-full bg-gradient-to-r from-sky-500 to-indigo-500 w-0 transition-all duration-150"></div>
     </div>
 
-    <!-- Main Container -->
-    <div class="min-h-screen flex flex-col lg:flex-row">
+    <!-- MAIN LAYOUT -->
+    <div class="flex-1 mt-16 flex flex-col lg:flex-row">
 
         <!-- Sidebar Navigation -->
-        <aside class="w-full lg:w-72 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 flex-shrink-0 lg:fixed lg:h-screen lg:overflow-y-auto z-40">
-            <div class="p-5 border-b border-slate-800 flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-semibold tracking-wider text-sky-400 uppercase">Course Module • IDIS 3815</span>
-                    <h1 class="text-lg font-bold text-white leading-tight">Cybersecurity in Transportation</h1>
+        <aside class="w-full lg:w-72 bg-white dark:bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 flex-shrink-0 lg:fixed lg:h-[calc(100vh-4rem)] lg:overflow-y-auto z-40">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    <span>Course Progress</span>
+                    <span id="completionPercentage">0%</span>
+                </div>
+                <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div id="progressBarInner" class="bg-sky-500 h-full w-0 transition-all duration-300"></div>
                 </div>
             </div>
 
             <nav class="p-4 space-y-1 text-sm font-medium">
-                <a href="#overview" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-graduation-cap text-sky-400 w-5"></i>
-                    <span>1. Overview & Objectives</span>
+                <a href="#overview" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-graduation-cap text-sky-500 w-5"></i>
+                    <span>Overview & Objectives</span>
                 </a>
-                <a href="#role-transport" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-truck-fast text-sky-400 w-5"></i>
-                    <span>2. Role of Transportation</span>
+                <a href="#role-transport" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-truck-fast text-sky-500 w-5"></i>
+                    <span>1. Role of Transportation</span>
                 </a>
-                <a href="#modes" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-layer-group text-sky-400 w-5"></i>
-                    <span>3. Primary Modes Analysis</span>
+                <a href="#modes" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-layer-group text-sky-500 w-5"></i>
+                    <span>2. Primary Modes Matrix</span>
                 </a>
-                <a href="#planning-execution" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-diagram-project text-sky-400 w-5"></i>
-                    <span>4. Planning & Execution</span>
+                <a href="#planning-execution" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-diagram-project text-sky-500 w-5"></i>
+                    <span>3. Planning & Execution</span>
                 </a>
-                <a href="#tms-strategies" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-chess-knight text-sky-400 w-5"></i>
-                    <span>5. Management Strategies</span>
+                <a href="#tms-strategies" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-chess-knight text-sky-500 w-5"></i>
+                    <span>4. Management Strategies</span>
                 </a>
-                <a href="#analytics-calculator" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-calculator text-sky-400 w-5"></i>
-                    <span>6. Service & Cost Metrics</span>
+                <a href="#analytics-calculator" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-calculator text-sky-500 w-5"></i>
+                    <span>5. Metrics Calculator</span>
                 </a>
-                <a href="#it-cybersecurity" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-network-wired text-sky-400 w-5"></i>
-                    <span>7. IT & Cyber Landscape</span>
+                <a href="#it-cybersecurity" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-network-wired text-sky-500 w-5"></i>
+                    <span>6. IT Infrastructure</span>
                 </a>
-                <a href="#case-studies" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-shield-cat text-rose-400 w-5"></i>
-                    <span>8. Case Studies & Defense</span>
+                <a href="#case-studies" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-shield-cat text-rose-500 w-5"></i>
+                    <span>7. Case Studies & Defense</span>
                 </a>
-                <a href="#interactive-sim" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-gamepad text-emerald-400 w-5"></i>
-                    <span>9. Risk Audit Simulator</span>
-                </a>
-                <a href="#knowledge-check" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-clipboard-check text-amber-400 w-5"></i>
-                    <span>10. Knowledge Check</span>
+                <a href="#interactive-sim" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-gamepad text-emerald-500 w-5"></i>
+                    <span>8. Audit & Assessment</span>
                 </a>
             </nav>
-
-            <div class="p-4 m-4 rounded-xl bg-slate-800/60 border border-slate-700/50 text-xs text-slate-400 space-y-2">
-                <div class="flex items-center justify-between text-slate-300 font-semibold">
-                    <span>Module Progress</span>
-                    <span id="completionPercentage">0%</span>
-                </div>
-                <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
-                    <div id="progressBarInner" class="bg-sky-500 h-full w-0 transition-all duration-300"></div>
-                </div>
-                <p>Complete all interactive sections and the final quiz to earn your badge.</p>
-            </div>
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- Content Area -->
         <main class="flex-1 lg:ml-72 p-4 sm:p-8 md:p-12 max-w-6xl space-y-16">
 
-            <!-- HERO HEADER -->
-            <header id="overview" class="space-y-6 pt-4 border-b border-slate-800 pb-10">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-semibold">
+            <!-- HERO OVERVIEW -->
+            <header id="overview" class="space-y-6 pt-4 border-b border-slate-200 dark:border-slate-800 pb-10">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-600 dark:text-sky-400 text-xs font-bold">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <span>Degree Level Coursework • Logistics & Supply Chain Management</span>
+                    <span>Degree Module • Logistics & Supply Chain Management</span>
                 </div>
-                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
                     Cybersecurity Risks & Resilience in <span class="gradient-text">Transportation & Logistics</span>
                 </h1>
-                <p class="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
-                    As transportation networks transform into hyper-connected digital ecosystems powered by IoT, Telematics, Automated Cargo Handling, and Cloud-native Transportation Management Systems (TMS), they simultaneously expose critical vulnerabilities. This course module examines the intersection of transportation logistics and cybersecurity risk mitigation.
+                <p class="text-slate-700 dark:text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
+                    As physical transportation networks transform into hyper-connected digital ecosystems powered by IoT telematics, port operating systems, dynamic API tendering, and cloud TMS, they expose critical vulnerabilities. This course module equips future logistics managers with the tools to analyze modal trade-offs, measure cost penalties, and mitigate cyber disruptions across global supply chains.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                    <div class="glass-panel p-4 rounded-xl border border-slate-800">
-                        <div class="text-sky-400 text-xl font-bold mb-1"><i class="fa-solid fa-bullseye mr-2"></i>Learning Goal 1</div>
-                        <p class="text-xs text-slate-400">Master trade-offs in transportation modes, cost structures, and operational planning metrics.</p>
+                    <div class="glass-panel p-4 rounded-xl">
+                        <div class="text-sky-600 dark:text-sky-400 text-lg font-bold mb-1"><i class="fa-solid fa-bullseye mr-2"></i>Learning Goal 1</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Master modal trade-offs, cost structures, and operational planning metrics across supply chain networks.</p>
                     </div>
-                    <div class="glass-panel p-4 rounded-xl border border-slate-800">
-                        <div class="text-amber-400 text-xl font-bold mb-1"><i class="fa-solid fa-bug mr-2"></i>Learning Goal 2</div>
-                        <p class="text-xs text-slate-400">Identify cyber attack vectors across ELDs, Port Operating Systems, TMS APIs, and Pipeline SCADA.</p>
+                    <div class="glass-panel p-4 rounded-xl">
+                        <div class="text-amber-600 dark:text-amber-400 text-lg font-bold mb-1"><i class="fa-solid fa-bug mr-2"></i>Learning Goal 2</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Identify cyber attack vectors across ELDs, Port Operating Systems, TMS APIs, and Pipeline SCADA.</p>
                     </div>
-                    <div class="glass-panel p-4 rounded-xl border border-slate-800">
-                        <div class="text-emerald-400 text-xl font-bold mb-1"><i class="fa-solid fa-lock mr-2"></i>Learning Goal 3</div>
-                        <p class="text-xs text-slate-400">Design resilient Zero-Trust operational defenses to ensure uninterrupted supply chain continuity.</p>
+                    <div class="glass-panel p-4 rounded-xl">
+                        <div class="text-emerald-600 dark:text-emerald-400 text-lg font-bold mb-1"><i class="fa-solid fa-lock mr-2"></i>Learning Goal 3</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Formulate resilient Zero-Trust operational defenses to guarantee continuous physical cargo flows.</p>
                     </div>
                 </div>
             </header>
 
-            <!-- SECTION 2: ROLE OF TRANSPORTATION -->
-            <section id="role-transport" class="space-y-6 scroll-mt-6">
+            <!-- SECTION 1: ROLE OF TRANSPORTATION -->
+            <section id="role-transport" class="space-y-6 scroll-mt-20">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 rounded-lg">
+                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-lg">
                         <i class="fa-solid fa-truck-fast text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-xs text-sky-400 font-semibold tracking-wider uppercase">Section 02</span>
-                        <h2 class="text-2xl font-bold text-white">The Strategic Role of Transportation in Supply Chains</h2>
+                        <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold tracking-wider uppercase">Section 01</span>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">1. The Role of Transportation in Supply Chain Management</h2>
                     </div>
                 </div>
 
-                <p class="text-slate-300 leading-relaxed">
-                    Transportation serves as the physical glue connecting disparate supply chain nodes (raw material vendors, manufacturing facilities, fulfillment hubs, and end customers). Without effective transportation, supply chains cannot bridge time and distance barriers.
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Transportation is the operational bridge connecting nodes (factories, warehouses, retail hubs) across global supply chains. Without efficient, predictable transportation, production lines stall and fulfillment collapses.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="glass-panel p-6 rounded-xl space-y-3">
-                        <div class="flex items-center space-x-3 text-sky-400">
+                        <div class="flex items-center space-x-3 text-sky-600 dark:text-sky-400">
                             <i class="fa-solid fa-clock-rotate-left text-lg"></i>
-                            <h3 class="font-bold text-lg text-white">Time & Space Utility</h3>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Time & Space Utility</h3>
                         </div>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Transportation creates <strong class="text-white">Place Utility</strong> by moving goods from locations of surplus to locations of demand, and <strong class="text-white">Time Utility</strong> by ensuring products arrive precisely when needed for manufacturing or retail sale.
+                        <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Transportation creates <strong class="text-slate-900 dark:text-white">Place Utility</strong> by physically transferring goods from low-demand surplus areas to high-demand consumption markets, and <strong class="text-slate-900 dark:text-white">Time Utility</strong> by ensuring products arrive exactly when required by production schedules.
                         </p>
                     </div>
 
                     <div class="glass-panel p-6 rounded-xl space-y-3">
-                        <div class="flex items-center space-x-3 text-indigo-400">
+                        <div class="flex items-center space-x-3 text-indigo-600 dark:text-indigo-400">
                             <i class="fa-solid fa-diagram-next text-lg"></i>
-                            <h3 class="font-bold text-lg text-white">Node Connectivity & Flow</h3>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Node-Link Network Connectivity</h3>
                         </div>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Nodes represent stationary facilities (warehouses, factories, ports). Transportation represents the <strong class="text-white">links</strong>. Disrupting a link halts material flow, creating bullwhip effects and cascading operational halts.
+                        <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Nodes represent fixed locations (distribution centers, ports, manufacturing plants), while transportation modes serve as the connecting <strong class="text-slate-900 dark:text-white">links</strong>. Disrupting a digital or physical link paralyzes upstream and downstream flow.
                         </p>
                     </div>
 
                     <div class="glass-panel p-6 rounded-xl space-y-3">
-                        <div class="flex items-center space-x-3 text-emerald-400">
+                        <div class="flex items-center space-x-3 text-emerald-600 dark:text-emerald-400">
                             <i class="fa-solid fa-boxes-packing text-lg"></i>
-                            <h3 class="font-bold text-lg text-white">Order Fulfillment & Speed</h3>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Order Fulfillment & Speed</h3>
                         </div>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Modern e-commerce demands rapid fulfillment cycles. Transportation execution directly impacts order lead times, customer satisfaction, and working capital locked in pipeline inventory.
+                        <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Logistics efficiency directly dictates order lead times, inventory turnover rates, and working capital requirements. Transit delays translate into costly buffer stock and lost revenue.
                         </p>
                     </div>
 
                     <div class="glass-panel p-6 rounded-xl space-y-3">
-                        <div class="flex items-center space-x-3 text-rose-400">
+                        <div class="flex items-center space-x-3 text-rose-600 dark:text-rose-400">
                             <i class="fa-solid fa-triangle-exclamation text-lg"></i>
-                            <h3 class="font-bold text-lg text-white">Business Continuity Risk</h3>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Cyber Risk Exposure</h3>
                         </div>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Because transportation operates outside the physical perimeter of a single facility, it is inherently vulnerable to external physical, geopolitical, and <strong class="text-rose-300">cyber threats</strong>.
+                        <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Because transportation assets travel outside secure facility perimeters and rely on continuous wireless telemetry, EDI exchanges, and cloud APIs, they present an expansive attack surface for cyber adversaries.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 3: PRIMARY TRANSPORTATION MODES -->
-            <section id="modes" class="space-y-6 scroll-mt-6">
+            <!-- SECTION 2: PRIMARY MODES MATRIX -->
+            <section id="modes" class="space-y-6 scroll-mt-20">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 rounded-lg">
+                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-lg">
                         <i class="fa-solid fa-layer-group text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-xs text-sky-400 font-semibold tracking-wider uppercase">Section 03</span>
-                        <h2 class="text-2xl font-bold text-white">Primary Transportation Modes: Service, Cost & Cyber Profiles</h2>
+                        <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold tracking-wider uppercase">Section 02</span>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">2. Primary Transportation Modes Matrix</h2>
                     </div>
                 </div>
 
-                <p class="text-slate-300 leading-relaxed">
-                    Selecting the right transportation mode involves evaluating trade-offs between speed, availability, dependability, capability, frequency, and cost structures. In digitalized logistics, each mode also presents distinct cyber vulnerability footprints.
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Each transportation mode presents unique trade-offs across speed, capacity, cost structures, and digital vulnerability profiles. Click a mode to view detailed operational and cybersecurity parameters.
                 </p>
 
-                <!-- Interactive Mode Comparison Tool -->
+                <!-- Interactive Mode Selector -->
                 <div class="glass-panel p-6 rounded-2xl border border-sky-500/30 space-y-6">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
                         <div>
-                            <h3 class="text-lg font-bold text-white">Interactive Mode Comparison & Cyber Threat Analyzer</h3>
-                            <p class="text-xs text-slate-400">Select a mode below to analyze operational characteristics and cyber risk factors.</p>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Interactive Modal & Cyber Profile Matrix</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Select a primary mode to compare service parameters and threat vectors.</p>
                         </div>
                         <div class="flex flex-wrap gap-2" id="modeBtnGroup">
                             <button onclick="selectMode('truck')" id="btn-truck" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition">Motor (Trucking)</button>
-                            <button onclick="selectMode('rail')" id="btn-rail" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Rail</button>
-                            <button onclick="selectMode('water')" id="btn-water" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Water</button>
-                            <button onclick="selectMode('air')" id="btn-air" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Air</button>
-                            <button onclick="selectMode('pipeline')" id="btn-pipeline" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Pipeline</button>
+                            <button onclick="selectMode('rail')" id="btn-rail" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition">Rail</button>
+                            <button onclick="selectMode('water')" id="btn-water" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition">Water</button>
+                            <button onclick="selectMode('air')" id="btn-air" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition">Air</button>
+                            <button onclick="selectMode('pipeline')" id="btn-pipeline" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition">Pipeline</button>
                         </div>
                     </div>
 
-                    <!-- Dynamic Content Container -->
+                    <!-- Dynamic Mode Display -->
                     <div id="modeDetailDisplay" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <!-- Populated by JavaScript -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 4: PLANNING & EXECUTION -->
-            <section id="planning-execution" class="space-y-6 scroll-mt-6">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 rounded-lg">
-                        <i class="fa-solid fa-diagram-project text-xl"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs text-sky-400 font-semibold tracking-wider uppercase">Section 04</span>
-                        <h2 class="text-2xl font-bold text-white">Key Activities in Transportation Planning & Execution</h2>
-                    </div>
-                </div>
-
-                <p class="text-slate-300 leading-relaxed">
-                    Transportation operations follow a structured lifecycle from long-term strategic network design down to real-time dispatching and financial settlement.
-                </p>
-
-                <!-- Interactive Workflow Sequence -->
-                <div class="space-y-4">
-                    <h3 class="text-md font-semibold text-slate-300">Click each lifecycle phase to explore operational duties & digital touchpoints:</h3>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        <div onclick="showPhase(1)" id="phase-tab-1" class="phase-card cursor-pointer p-4 rounded-xl bg-slate-900 border border-sky-500/50 hover:border-sky-400 transition">
-                            <span class="text-xs font-mono text-sky-400 font-bold">STAGE 01</span>
-                            <h4 class="text-sm font-bold text-white mt-1">Network Design</h4>
-                        </div>
-                        <div onclick="showPhase(2)" id="phase-tab-2" class="phase-card cursor-pointer p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-sky-400 transition">
-                            <span class="text-xs font-mono text-slate-500 font-bold">STAGE 02</span>
-                            <h4 class="text-sm font-bold text-white mt-1">Mode & Carrier Selection</h4>
-                        </div>
-                        <div onclick="showPhase(3)" id="phase-tab-3" class="phase-card cursor-pointer p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-sky-400 transition">
-                            <span class="text-xs font-mono text-slate-500 font-bold">STAGE 03</span>
-                            <h4 class="text-sm font-bold text-white mt-1">Routing & Optimization</h4>
-                        </div>
-                        <div onclick="showPhase(4)" id="phase-tab-4" class="phase-card cursor-pointer p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-sky-400 transition">
-                            <span class="text-xs font-mono text-slate-500 font-bold">STAGE 04</span>
-                            <h4 class="text-sm font-bold text-white mt-1">Dispatch & Audit</h4>
-                        </div>
-                    </div>
-
-                    <div id="phaseContent" class="glass-panel p-6 rounded-xl border border-slate-800 space-y-4">
                         <!-- Populated by JS -->
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 5: MANAGEMENT STRATEGIES -->
-            <section id="tms-strategies" class="space-y-6 scroll-mt-6">
+            <!-- SECTION 3: PLANNING & EXECUTION -->
+            <section id="planning-execution" class="space-y-6 scroll-mt-20">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 rounded-lg">
+                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-lg">
+                        <i class="fa-solid fa-diagram-project text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold tracking-wider uppercase">Section 03</span>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">3. Key Activities in Transportation Planning & Execution</h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div onclick="showPhase(1)" id="phase-tab-1" class="phase-card cursor-pointer p-4 rounded-xl bg-white dark:bg-slate-900 border border-sky-500/50 shadow-sm hover:border-sky-500 transition space-y-2">
+                        <span class="text-xs font-mono text-sky-600 dark:text-sky-400 font-bold">PHASE 01</span>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Strategic Network Design</h3>
+                    </div>
+                    <div onclick="showPhase(2)" id="phase-tab-2" class="phase-card cursor-pointer p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-sky-500 transition space-y-2">
+                        <span class="text-xs font-mono text-slate-400 font-bold">PHASE 02</span>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Mode & Carrier Procurement</h3>
+                    </div>
+                    <div onclick="showPhase(3)" id="phase-tab-3" class="phase-card cursor-pointer p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-sky-500 transition space-y-2">
+                        <span class="text-xs font-mono text-slate-400 font-bold">PHASE 03</span>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Load Building & Routing</h3>
+                    </div>
+                    <div onclick="showPhase(4)" id="phase-tab-4" class="phase-card cursor-pointer p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-sky-500 transition space-y-2">
+                        <span class="text-xs font-mono text-slate-400 font-bold">PHASE 04</span>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Execution, Dispatch & Audit</h3>
+                    </div>
+                </div>
+
+                <div id="phaseContent" class="glass-panel p-6 rounded-xl space-y-4">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- SECTION 4: MANAGEMENT STRATEGIES -->
+            <section id="tms-strategies" class="space-y-6 scroll-mt-20">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-lg">
                         <i class="fa-solid fa-chess-knight text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-xs text-sky-400 font-semibold tracking-wider uppercase">Section 05</span>
-                        <h2 class="text-2xl font-bold text-white">Modern Transportation Management Strategies</h2>
+                        <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold tracking-wider uppercase">Section 04</span>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">4. Modern Transportation Management Strategies</h2>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-2">
-                        <h3 class="text-lg font-bold text-sky-400">Collaborative Continuous Moves</h3>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Linking backhaul legs across multiple shippers to reduce deadhead (empty miles), maximizing fleet asset efficiency and reducing total carbon footprints.
+                    <div class="glass-panel p-5 rounded-xl space-y-2">
+                        <h3 class="text-lg font-bold text-sky-600 dark:text-sky-400">Continuous Move & Collaborative Tendering</h3>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Linking backhaul legs across multiple shippers to eliminate empty miles (deadhead). <strong class="text-slate-900 dark:text-white">Cyber Risk:</strong> Joint shipper-carrier APIs expose shared load databases if partner authentication is unvalidated.
                         </p>
                     </div>
-                    <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-2">
-                        <h3 class="text-lg font-bold text-indigo-400">Cross-Docking & Hub Consolidation</h3>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Bypassing long-term warehouse storage by unloading incoming shipments directly onto outbound vehicles with minimal staging, relying heavily on real-time WMS/TMS integrations.
+                    <div class="glass-panel p-5 rounded-xl space-y-2">
+                        <h3 class="text-lg font-bold text-indigo-600 dark:text-indigo-400">Cross-Docking & Dynamic Hubs</h3>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Transferring incoming shipments directly onto outbound trailers with minimal staging. <strong class="text-slate-900 dark:text-white">Cyber Risk:</strong> RFID barcode scanning delays or WMS database lockouts freeze cross-dock operations within hours.
                         </p>
                     </div>
-                    <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-2">
-                        <h3 class="text-lg font-bold text-emerald-400">Dynamic Visibility Platforms</h3>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Leveraging cloud aggregator platforms (e.g., project44, FourKites) that consume cellular/GPS feed APIs to provide real-time ETA predictions and dwell time analytics.
+                    <div class="glass-panel p-5 rounded-xl space-y-2">
+                        <h3 class="text-lg font-bold text-emerald-600 dark:text-emerald-400">Control Towers & IoT Telematics</h3>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Centralized visibility portals aggregating real-time GPS feeds (project44, FourKites). <strong class="text-slate-900 dark:text-white">Cyber Risk:</strong> Compromised IoT sensors allow attackers to send fake ETA data, masking cargo theft.
                         </p>
                     </div>
-                    <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-2">
-                        <h3 class="text-lg font-bold text-amber-400">Autonomous & Intermodal Orchestration</h3>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            Seamlessly transferring standardized ISO containers across rail, ocean, and highway legs via automated crane operating systems and centralized booking portals.
+                    <div class="glass-panel p-5 rounded-xl space-y-2">
+                        <h3 class="text-lg font-bold text-purple-600 dark:text-purple-400">Zero Trust Logistics Architecture</h3>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Treating every truck dongle, EDI partner, and API call as untrusted. Requires constant credential verification, micro-segmentation, and cryptographic payload signatures.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 6: ANALYTICS CALCULATOR -->
-            <section id="analytics-calculator" class="space-y-6 scroll-mt-6">
+            <!-- SECTION 5: METRICS CALCULATOR -->
+            <section id="analytics-calculator" class="space-y-6 scroll-mt-20">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 rounded-lg">
+                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-lg">
                         <i class="fa-solid fa-calculator text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-xs text-sky-400 font-semibold tracking-wider uppercase">Section 06</span>
-                        <h2 class="text-2xl font-bold text-white">Service & Cost Metrics (Interactive Analytics Tool)</h2>
+                        <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold tracking-wider uppercase">Section 05</span>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">5. Metrics & Performance Analysis (Interactive Calculator)</h2>
                     </div>
                 </div>
 
-                <p class="text-slate-300 leading-relaxed">
-                    Logistics managers measure performance using key metrics such as Cost Per Ton-Mile, On-Time Delivery (OTD %), and Dwell Cost penalties. Use the simulator below to calculate logistics trade-offs and evaluate financial impacts.
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Analyze transportation cost efficiency and model the catastrophic operational penalties caused by cyber ransomware disruptions.
                 </p>
 
-                <!-- Interactive Metric Calculator -->
                 <div class="glass-panel p-6 rounded-2xl border border-sky-500/30 space-y-6">
-                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">
-                        <i class="fa-solid fa-sliders text-sky-400 mr-2"></i>Transportation Performance & Penalty Simulator
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-3">
+                        <i class="fa-solid fa-sliders text-sky-500 mr-2"></i>Performance Metrics & Ransomware Penalty Simulator
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Inputs Column -->
+                        <!-- Inputs -->
                         <div class="space-y-4 md:col-span-1">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Total Shipment Weight (Tons)</label>
-                                <input type="number" id="calcWeight" value="25" min="1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Cargo Weight (Tons)</label>
+                                <input type="number" id="calcWeight" value="20" min="1" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Distance (Miles)</label>
-                                <input type="number" id="calcDistance" value="850" min="1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Distance (Miles)</label>
+                                <input type="number" id="calcDistance" value="1200" min="1" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Freight Rate / Linehaul Cost ($)</label>
-                                <input type="number" id="calcCost" value="2450" min="1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Linehaul Freight Cost ($)</label>
+                                <input type="number" id="calcCost" value="3200" min="1" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Port / Facility Dwell Time (Hours)</label>
-                                <input type="number" id="calcDwell" value="14" min="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">On-Time Orders (Out of 100)</label>
+                                <input type="number" id="calcOnTime" value="94" min="0" max="100" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Dwell Penalty Rate ($/hour over 2h free)</label>
-                                <input type="number" id="calcDwellRate" value="75" min="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Cyber Outage Delay (Hours)</label>
+                                <input type="number" id="calcDelayHours" value="18" min="0" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:border-sky-500 focus:outline-none">
                             </div>
                             <button onclick="calculateMetrics()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 rounded-lg text-sm transition flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-calculator"></i>
@@ -410,43 +435,42 @@
                             </button>
                         </div>
 
-                        <!-- Results Column -->
-                        <div class="md:col-span-2 bg-slate-900/90 rounded-xl p-5 border border-slate-800 space-y-4 flex flex-col justify-between">
+                        <!-- Results -->
+                        <div class="md:col-span-2 bg-slate-100 dark:bg-slate-900/90 rounded-xl p-5 border border-slate-200 dark:border-slate-800 space-y-4 flex flex-col justify-between">
                             <div>
-                                <h4 class="text-xs font-semibold text-sky-400 uppercase tracking-wider mb-3">Calculated Operational Performance</h4>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                                        <span class="text-xs text-slate-400 block">Total Ton-Miles</span>
-                                        <span id="resTonMiles" class="text-lg font-bold font-mono text-white">21,250</span>
+                                <h4 class="text-xs font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wider mb-3">Calculated Output & Financial Impact</h4>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-bold">Ton-Miles</span>
+                                        <span id="resTonMiles" class="text-base font-bold font-mono text-slate-900 dark:text-white">24,000</span>
                                     </div>
-                                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                                        <span class="text-xs text-slate-400 block">Cost per Ton-Mile</span>
-                                        <span id="resCostTonMile" class="text-lg font-bold font-mono text-sky-400">$0.115</span>
+                                    <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-bold">Cost / Ton-Mile</span>
+                                        <span id="resCostTonMile" class="text-base font-bold font-mono text-sky-600 dark:text-sky-400">$0.133</span>
                                     </div>
-                                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                                        <span class="text-xs text-slate-400 block">Dwell Penalty Total</span>
-                                        <span id="resDwellPenalty" class="text-lg font-bold font-mono text-rose-400">$900.00</span>
+                                    <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-bold">Cost / Mile</span>
+                                        <span id="resCostMile" class="text-base font-bold font-mono text-slate-900 dark:text-white">$2.67</span>
                                     </div>
-                                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                                        <span class="text-xs text-slate-400 block">Cost per Mile</span>
-                                        <span id="resCostMile" class="text-lg font-bold font-mono text-white">$2.88</span>
+                                    <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-bold">OTIF % Metric</span>
+                                        <span id="resOTIF" class="text-base font-bold font-mono text-emerald-600 dark:text-emerald-400">94.0%</span>
                                     </div>
-                                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                                        <span class="text-xs text-slate-400 block">Effective Total Cost</span>
-                                        <span id="resTotalCost" class="text-lg font-bold font-mono text-amber-400">$3,350.00</span>
+                                    <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-bold">Ransomware Delay Fine</span>
+                                        <span id="resDelayPenalty" class="text-base font-bold font-mono text-rose-600 dark:text-rose-400">$1,600.00</span>
                                     </div>
-                                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                                        <span class="text-xs text-slate-400 block">Cost Overhead %</span>
-                                        <span id="resOverhead" class="text-lg font-bold font-mono text-rose-400">+36.7%</span>
+                                    <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-bold">Total Effective Cost</span>
+                                        <span id="resTotalCost" class="text-base font-bold font-mono text-amber-600 dark:text-amber-400">$4,800.00</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Insight Banner -->
-                            <div class="p-3 bg-sky-950/40 border border-sky-800/50 rounded-lg text-xs text-sky-200 flex items-start space-x-2">
-                                <i class="fa-solid fa-lightbulb text-sky-400 text-sm mt-0.5"></i>
+                            <div class="p-3 bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800/50 rounded-lg text-xs text-sky-900 dark:text-sky-200 flex items-start space-x-2">
+                                <i class="fa-solid fa-lightbulb text-sky-500 text-sm mt-0.5"></i>
                                 <div id="calcInsightText">
-                                    <strong>Managerial Takeaway:</strong> Excessive dwell time (e.g., waiting at terminal gates due to cyber outages) dramatically increases effective costs per mile and shrinks carrier profit margins.
+                                    <strong>Managerial Takeaway:</strong> Unplanned delays caused by ransomware at port gates or freight terminals dramatically increase effective costs per mile and destroy OTIF service level agreements.
                                 </div>
                             </div>
                         </div>
@@ -454,287 +478,275 @@
                 </div>
             </section>
 
-            <!-- SECTION 7: IT & CYBERSECURITY IN TRANSPORTATION -->
-            <section id="it-cybersecurity" class="space-y-6 scroll-mt-6">
+            <!-- SECTION 6: IT & CYBER INFRASTRUCTURE -->
+            <section id="it-cybersecurity" class="space-y-6 scroll-mt-20">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 rounded-lg">
+                    <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-lg">
                         <i class="fa-solid fa-network-wired text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-xs text-sky-400 font-semibold tracking-wider uppercase">Section 07</span>
-                        <h2 class="text-2xl font-bold text-white">IT Ecosystem & Cybersecurity Vulnerabilities</h2>
+                        <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold tracking-wider uppercase">Section 06</span>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">6. IT & Cybersecurity Infrastructure in Transportation</h2>
                     </div>
                 </div>
 
-                <p class="text-slate-300 leading-relaxed">
-                    Modern supply chains run on data exchanges. Every technology integration point acts as both an operational enabler and a potential cybersecurity exploit surface.
-                </p>
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-3">
-                        <div class="text-sky-400 font-bold flex items-center space-x-2">
-                            <i class="fa-solid fa-file-invoice"></i>
+                    <div class="glass-panel p-5 rounded-xl space-y-3">
+                        <div class="text-sky-600 dark:text-sky-400 font-bold flex items-center space-x-2">
+                            <i class="fa-solid fa-file-invoice text-lg"></i>
                             <span>EDI & REST APIs</span>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Electronic Data Interchange (EDI 204, 214, 210) and modern APIs automate load tendering, status updates, and invoicing. <strong class="text-rose-400">Vulnerability:</strong> Unvalidated API keys allow fraudulent load tendering and payload spoofing.
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            EDI 204 (Tender), EDI 214 (Status), and REST APIs automate load booking and invoicing. <strong class="text-rose-600 dark:text-rose-400">Threat Vector:</strong> Unprotected API keys allow threat actors to inject fictitious loads and hijack tender payments.
                         </p>
                     </div>
 
-                    <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-3">
-                        <div class="text-sky-400 font-bold flex items-center space-x-2">
-                            <i class="fa-solid fa-microchip"></i>
-                            <span>IoT & ELD Telematics</span>
+                    <div class="glass-panel p-5 rounded-xl space-y-3">
+                        <div class="text-sky-600 dark:text-sky-400 font-bold flex items-center space-x-2">
+                            <i class="fa-solid fa-microchip text-lg"></i>
+                            <span>ELDs & Vehicle Telematics</span>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Electronic Logging Devices (ELDs) stream engine diagnostics and GPS data. <strong class="text-rose-400">Vulnerability:</strong> CAN bus exposure through compromised Bluetooth/cellular ELD dongles permits remote engine telemetry manipulation.
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            ELDs connect to vehicle CAN buses to stream driver hours and engine health. <strong class="text-rose-600 dark:text-rose-400">Threat Vector:</strong> Bluetooth vulnerabilities allow attackers to spoof telemetry or disable vehicle engines remotely.
                         </p>
                     </div>
 
-                    <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-3">
-                        <div class="text-sky-400 font-bold flex items-center space-x-2">
-                            <i class="fa-solid fa-gears"></i>
+                    <div class="glass-panel p-5 rounded-xl space-y-3">
+                        <div class="text-sky-600 dark:text-sky-400 font-bold flex items-center space-x-2">
+                            <i class="fa-solid fa-gears text-lg"></i>
                             <span>SCADA & Terminal OS</span>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Port Operating Systems (TOS) control automated gantry cranes and container placement. <strong class="text-rose-400">Vulnerability:</strong> Legacy industrial control systems (ICS) lacking encryption can be paralyzed by targeted malware.
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Industrial control systems operate pipeline valves and port gantry cranes. <strong class="text-rose-600 dark:text-rose-400">Threat Vector:</strong> Unsegmented OT networks permit ransomware to paralyze physical cargo lifting equipment.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 8: CASE STUDIES & DEFENSE -->
-            <section id="case-studies" class="space-y-8 scroll-mt-6">
+            <!-- SECTION 7: CASE STUDIES & DEFENSE -->
+            <section id="case-studies" class="space-y-8 scroll-mt-20">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-lg">
+                    <div class="p-2.5 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-lg">
                         <i class="fa-solid fa-shield-cat text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-xs text-rose-400 font-semibold tracking-wider uppercase">Section 08</span>
-                        <h2 class="text-2xl font-bold text-white">Real-World Case Studies: Cyber Weaknesses & Defense Protocols</h2>
+                        <span class="text-xs text-rose-600 dark:text-rose-400 font-semibold tracking-wider uppercase">Section 07</span>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">7. Real-World Case Studies & Defense Mitigations</h2>
                     </div>
                 </div>
 
-                <p class="text-slate-300 leading-relaxed">
-                    Examine four critical scenarios where weak cybersecurity directly disrupted supply chain transportation networks, along with technical mitigation frameworks required to prevent recurrence.
-                </p>
-
-                <!-- Case Study 1 -->
+                <!-- Case 1 -->
                 <div class="glass-panel rounded-2xl border border-rose-500/30 overflow-hidden">
-                    <div class="bg-gradient-to-r from-rose-950/80 to-slate-900 p-6 border-b border-rose-500/20 flex items-center justify-between">
+                    <div class="bg-rose-500/10 dark:bg-gradient-to-r dark:from-rose-950/80 dark:to-slate-900 p-6 border-b border-rose-500/20 flex items-center justify-between">
                         <div>
-                            <span class="text-xs font-mono text-rose-400 font-bold uppercase">Case Study 01 • Maritime & Port Logistics</span>
-                            <h3 class="text-xl font-bold text-white mt-1">Ransomware & Container Terminal OS Shutdown</h3>
+                            <span class="text-xs font-mono text-rose-600 dark:text-rose-400 font-bold uppercase">Case 01 • Maritime Port Terminal</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">Port Container Terminal Ransomware Paralysis</h3>
                         </div>
-                        <i class="fa-solid fa-ship text-3xl text-rose-500/40"></i>
+                        <i class="fa-solid fa-ship text-3xl text-rose-500/30"></i>
                     </div>
-                    <div class="p-6 space-y-4 text-sm text-slate-300">
+                    <div class="p-6 space-y-4 text-sm text-slate-700 dark:text-slate-300">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
-                                <p class="text-xs text-slate-300">Global container carrier operating 76 port terminals paralyzed by wiper malware (e.g., NotPetya-style attack).</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
+                                <p class="text-xs">Global port operator managing major container hubs struck by destructive wiper ransomware.</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-amber-400 text-xs uppercase mb-1">The Cybersecurity Weakness</h4>
-                                <p class="text-xs text-slate-300">Flat network architecture; unpatched Windows Active Directory Domain Controllers; administrative privilege creep across remote branch networks.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-amber-600 dark:text-amber-400 text-xs uppercase mb-1">Cyber Weakness</h4>
+                                <p class="text-xs">Flat IT/OT networks, unpatched domain controllers, and lack of air-gapped backups.</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-sky-400 text-xs uppercase mb-1">Supply Chain Impact</h4>
-                                <p class="text-xs text-slate-300">Gate paralysis, total loss of container location data, week-long port congestion, estimated $300M+ operational loss.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-sky-600 dark:text-sky-400 text-xs uppercase mb-1">Impact</h4>
+                                <p class="text-xs">Gate paralysis, loss of container location data, $300M+ operational losses across 10 days.</p>
                             </div>
                         </div>
 
-                        <div class="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl space-y-2">
-                            <h4 class="font-bold text-emerald-400 text-xs uppercase tracking-wider flex items-center">
-                                <i class="fa-solid fa-shield-halved mr-2"></i>Mitigation & Resilience Strategy
+                        <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-2">
+                            <h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider flex items-center">
+                                <i class="fa-solid fa-shield-halved mr-2"></i>Technical Mitigation Strategy
                             </h4>
-                            <ul class="list-disc list-inside text-xs text-slate-300 space-y-1">
-                                <li><strong class="text-white">Micro-segmentation:</strong> Isolate IT corporate networks from Terminal Operating Systems (TOS) and industrial OT networks.</li>
-                                <li><strong class="text-white">Immutable Off-Site Backups:</strong> Maintain offline, air-gapped domain controller state backups for rapid bare-metal recovery.</li>
-                                <li><strong class="text-white">Zero Trust Network Access (ZTNA):</strong> Require MFA and continuous device health verification prior to internal system bridging.</li>
+                            <ul class="list-disc list-inside text-xs space-y-1">
+                                <li><strong class="text-slate-900 dark:text-white">Zero Trust Network Access (ZTNA):</strong> Enforce identity verification prior to terminal network access.</li>
+                                <li><strong class="text-slate-900 dark:text-white">Immutable Air-Gapped Backups:</strong> Store offline snapshots of Terminal Operating System databases.</li>
+                                <li><strong class="text-slate-900 dark:text-white">Strict IT/OT Micro-segmentation:</strong> Isolate crane controllers from corporate email servers.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- Case Study 2 -->
+                <!-- Case 2 -->
                 <div class="glass-panel rounded-2xl border border-amber-500/30 overflow-hidden">
-                    <div class="bg-gradient-to-r from-amber-950/80 to-slate-900 p-6 border-b border-amber-500/20 flex items-center justify-between">
+                    <div class="bg-amber-500/10 dark:bg-gradient-to-r dark:from-amber-950/80 dark:to-slate-900 p-6 border-b border-amber-500/20 flex items-center justify-between">
                         <div>
-                            <span class="text-xs font-mono text-amber-400 font-bold uppercase">Case Study 02 • Fleet Trucking & Telematics</span>
-                            <h3 class="text-xl font-bold text-white mt-1">GPS Telemetry Spoofing & ELD Firmware Exploit</h3>
+                            <span class="text-xs font-mono text-amber-600 dark:text-amber-400 font-bold uppercase">Case 02 • Fleet Trucking Telematics</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">ELD Telemetry Hijack & Location Spoofing</h3>
                         </div>
-                        <i class="fa-solid fa-truck-field text-3xl text-amber-500/40"></i>
+                        <i class="fa-solid fa-truck-field text-3xl text-amber-500/30"></i>
                     </div>
-                    <div class="p-6 space-y-4 text-sm text-slate-300">
+                    <div class="p-6 space-y-4 text-sm text-slate-700 dark:text-slate-300">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
-                                <p class="text-xs text-slate-300">Highway freight fleet carrying high-value pharmaceutical cargo target of telemetry manipulation.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
+                                <p class="text-xs">Motor carrier carrying pharmaceutical goods subjected to telemetry manipulation.</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-amber-400 text-xs uppercase mb-1">The Cybersecurity Weakness</h4>
-                                <p class="text-xs text-slate-300">Unencrypted Bluetooth connectivity on ELD OBD-II dongles and lack of cryptographic firmware signature verification.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-amber-600 dark:text-amber-400 text-xs uppercase mb-1">Cyber Weakness</h4>
+                                <p class="text-xs">Unencrypted Bluetooth on ELD OBD dongles and unsigned firmware updates.</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-sky-400 text-xs uppercase mb-1">Supply Chain Impact</h4>
-                                <p class="text-xs text-slate-300">Real-time driver location spoofed on dispatch dashboards, allowing hijacking of vehicles and cargo loss without trigger alarms.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-sky-600 dark:text-sky-400 text-xs uppercase mb-1">Impact</h4>
+                                <p class="text-xs">False location feeds displayed on dispatch monitors during cargo theft in transit.</p>
                             </div>
                         </div>
 
-                        <div class="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl space-y-2">
-                            <h4 class="font-bold text-emerald-400 text-xs uppercase tracking-wider flex items-center">
-                                <i class="fa-solid fa-shield-halved mr-2"></i>Mitigation & Resilience Strategy
+                        <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-2">
+                            <h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider flex items-center">
+                                <i class="fa-solid fa-shield-halved mr-2"></i>Technical Mitigation Strategy
                             </h4>
-                            <ul class="list-disc list-inside text-xs text-slate-300 space-y-1">
-                                <li><strong class="text-white">Signed Firmware Over-The-Air (FOTA):</strong> Enforce Hardware Security Modules (HSM) to verify firmware signatures before execution.</li>
-                                <li><strong class="text-white">Dual-Source Location Cross-Checking:</strong> Correlate ELD cellular tower triangulation against raw satellite GPS data to detect spoofing.</li>
-                                <li><strong class="text-white">CAN Bus Isolation Gateway:</strong> Deploy unidirectional security gateways between diagnostic ports and vehicle actuation networks.</li>
+                            <ul class="list-disc list-inside text-xs space-y-1">
+                                <li><strong class="text-slate-900 dark:text-white">Cryptographically Signed FOTA:</strong> Enforce HSM signature checks before updating telematics firmware.</li>
+                                <li><strong class="text-slate-900 dark:text-white">Dual-Sensor GPS Validation:</strong> Cross-reference satellite GPS feeds against cell tower positioning.</li>
+                                <li><strong class="text-slate-900 dark:text-white">CAN Bus Firewall Gateways:</strong> Block diagnostic dongles from sending write commands to engine ECUs.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- Case Study 3 -->
+                <!-- Case 3 -->
                 <div class="glass-panel rounded-2xl border border-sky-500/30 overflow-hidden">
-                    <div class="bg-gradient-to-r from-sky-950/80 to-slate-900 p-6 border-b border-sky-500/20 flex items-center justify-between">
+                    <div class="bg-sky-500/10 dark:bg-gradient-to-r dark:from-sky-950/80 dark:to-slate-900 p-6 border-b border-sky-500/20 flex items-center justify-between">
                         <div>
-                            <span class="text-xs font-mono text-sky-400 font-bold uppercase">Case Study 03 • Digital Freight Matching & TMS</span>
-                            <h3 class="text-xl font-bold text-white mt-1">API Key Hijacking & Identity Theft Cargo Fraud</h3>
+                            <span class="text-xs font-mono text-sky-600 dark:text-sky-400 font-bold uppercase">Case 03 • Digital Freight Brokerage</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">API Key Hijacking & Identity Spoofing Theft</h3>
                         </div>
-                        <i class="fa-solid fa-dolly text-3xl text-sky-500/40"></i>
+                        <i class="fa-solid fa-dolly text-3xl text-sky-500/30"></i>
                     </div>
-                    <div class="p-6 space-y-4 text-sm text-slate-300">
+                    <div class="p-6 space-y-4 text-sm text-slate-700 dark:text-slate-300">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
-                                <p class="text-xs text-slate-300">Digital freight broker platform managing thousands of daily load tenders across third-party carriers.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
+                                <p class="text-xs">Freight broker tendering thousands of daily loads via dynamic load board APIs.</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-amber-400 text-xs uppercase mb-1">The Cybersecurity Weakness</h4>
-                                <p class="text-xs text-slate-300">Exposed hardcoded API tokens in carrier mobile apps and lack of rate-limiting or IP pinning on REST endpoints.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-amber-600 dark:text-amber-400 text-xs uppercase mb-1">Cyber Weakness</h4>
+                                <p class="text-xs">Hardcoded static API tokens in mobile app source code and lack of IP pinning.</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-sky-400 text-xs uppercase mb-1">Supply Chain Impact</h4>
-                                <p class="text-xs text-slate-300">Threat actors spoofed legitimate carrier accounts, intercepted high-value electronic freight tenders, and redirected loads to unauthorized warehouses.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-sky-600 dark:text-sky-400 text-xs uppercase mb-1">Impact</h4>
+                                <p class="text-xs">Fictitious carriers intercepted high-value loads and redirected drivers to fraudulent warehouses.</p>
                             </div>
                         </div>
 
-                        <div class="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl space-y-2">
-                            <h4 class="font-bold text-emerald-400 text-xs uppercase tracking-wider flex items-center">
-                                <i class="fa-solid fa-shield-halved mr-2"></i>Mitigation & Resilience Strategy
+                        <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-2">
+                            <h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider flex items-center">
+                                <i class="fa-solid fa-shield-halved mr-2"></i>Technical Mitigation Strategy
                             </h4>
-                            <ul class="list-disc list-inside text-xs text-slate-300 space-y-1">
-                                <li><strong class="text-white">API Gateway Security & OAuth 2.0:</strong> Transition from static API keys to short-lived, cryptographically signed OAuth tokens.</li>
-                                <li><strong class="text-white">Automated Key Rotation & Secrets Management:</strong> Store production tokens in HashiCorp Vault with zero client hardcoding.</li>
-                                <li><strong class="text-white">Behavioral Anomaly Detection:</strong> Flag tender acceptance from unrecognized geofenced IP ranges or suspicious rate patterns.</li>
+                            <ul class="list-disc list-inside text-xs space-y-1">
+                                <li><strong class="text-slate-900 dark:text-white">OAuth 2.0 & mTLS:</strong> Enforce short-lived tokens and mutual TLS certificate authentication between brokers and carriers.</li>
+                                <li><strong class="text-slate-900 dark:text-white">Automated Secret Rotation:</strong> Store credentials in secrets vaults with automated 24-hour key expiration.</li>
+                                <li><strong class="text-slate-900 dark:text-white">Fraud Detection AI:</strong> Flag tender acceptances originating from suspicious IP addresses or spoofed carrier MC numbers.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- Case Study 4 -->
+                <!-- Case 4 -->
                 <div class="glass-panel rounded-2xl border border-purple-500/30 overflow-hidden">
-                    <div class="bg-gradient-to-r from-purple-950/80 to-slate-900 p-6 border-b border-purple-500/20 flex items-center justify-between">
+                    <div class="bg-purple-500/10 dark:bg-gradient-to-r dark:from-purple-950/80 dark:to-slate-900 p-6 border-b border-purple-500/20 flex items-center justify-between">
                         <div>
-                            <span class="text-xs font-mono text-purple-400 font-bold uppercase">Case Study 04 • Energy & Pipeline Infrastructure</span>
-                            <h3 class="text-xl font-bold text-white mt-1">SCADA Operational Pipeline Shutdown</h3>
+                            <span class="text-xs font-mono text-purple-600 dark:text-purple-400 font-bold uppercase">Case 04 • Pipeline Energy Infrastructure</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">Pipeline SCADA Ransomware & Billing Outage</h3>
                         </div>
-                        <i class="fa-solid fa-oil-well text-3xl text-purple-500/40"></i>
+                        <i class="fa-solid fa-oil-well text-3xl text-purple-500/30"></i>
                     </div>
-                    <div class="p-6 space-y-4 text-sm text-slate-300">
+                    <div class="p-6 space-y-4 text-sm text-slate-700 dark:text-slate-300">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
-                                <p class="text-xs text-slate-300">Major fuel transportation pipeline responsible for 45% of East Coast refined petroleum movement.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-rose-600 dark:text-rose-400 text-xs uppercase mb-1">Operational Context</h4>
+                                <p class="text-xs">Critical fuel pipeline responsible for moving 45% of East Coast refined petroleum.</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-amber-400 text-xs uppercase mb-1">The Cybersecurity Weakness</h4>
-                                <p class="text-xs text-slate-300">Leaked VPN password found on dark web; legacy VPN lacked multi-factor authentication (MFA).</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-amber-600 dark:text-amber-400 text-xs uppercase mb-1">Cyber Weakness</h4>
+                                <p class="text-xs">Leaked single-factor VPN password without multi-factor authentication (MFA).</p>
                             </div>
-                            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                                <h4 class="font-bold text-sky-400 text-xs uppercase mb-1">Supply Chain Impact</h4>
-                                <p class="text-xs text-slate-300">Precautionary 6-day complete pipeline shutdown due to IT/OT accounting billing bridge concerns, causing widespread jet fuel & gasoline shortages.</p>
+                            <div class="bg-slate-100 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <h4 class="font-bold text-sky-600 dark:text-sky-400 text-xs uppercase mb-1">Impact</h4>
+                                <p class="text-xs">6-day complete operational shutdown due to billing system compromise, triggering regional fuel panics.</p>
                             </div>
                         </div>
 
-                        <div class="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl space-y-2">
-                            <h4 class="font-bold text-emerald-400 text-xs uppercase tracking-wider flex items-center">
-                                <i class="fa-solid fa-shield-halved mr-2"></i>Mitigation & Resilience Strategy
+                        <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-2">
+                            <h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider flex items-center">
+                                <i class="fa-solid fa-shield-halved mr-2"></i>Technical Mitigation Strategy
                             </h4>
-                            <ul class="list-disc list-inside text-xs text-slate-300 space-y-1">
-                                <li><strong class="text-white">Universal Mandatory MFA:</strong> Enforce hardware-token MFA across all remote access endpoints and legacy VPN tunnels.</li>
-                                <li><strong class="text-white">Strict IT/OT Air-Gapping:</strong> Establish deterministic unidirectionally controlled firewalls (data diodes) between business IT networks and operational SCADA controllers.</li>
-                                <li><strong class="text-white">Manual Override Contingency Plans:</strong> Maintain trained operational crews capable of running flow pumps manually during extended IT system outages.</li>
+                            <ul class="list-disc list-inside text-xs space-y-1">
+                                <li><strong class="text-slate-900 dark:text-white">Universal MFA Enforcement:</strong> Mandate hardware-token MFA across all VPN endpoints and administrative connections.</li>
+                                <li><strong class="text-slate-900 dark:text-white">Deterministic IT/OT Data Diodes:</strong> Deploy hardware data diodes ensuring flow data moves unidirectional from SCADA to billing.</li>
+                                <li><strong class="text-slate-900 dark:text-white">Manual Control Override Training:</strong> Maintain manual valve control capability to sustain fuel flows during business IT outages.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 9: INTERACTIVE RISK AUDIT SIMULATOR -->
-            <section id="interactive-sim" class="space-y-6 scroll-mt-6">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg">
-                        <i class="fa-solid fa-gamepad text-xl"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs text-emerald-400 font-semibold tracking-wider uppercase">Section 09</span>
-                        <h2 class="text-2xl font-bold text-white">Interactive Cyber Risk Audit & Mitigation Simulator</h2>
-                    </div>
-                </div>
-
-                <p class="text-slate-300 leading-relaxed">
-                    Test your executive judgment as a Logistics Cyber Risk Director. Evaluate operational security vulnerabilities in simulated supply chain scenarios and select the optimal defense protocol.
-                </p>
-
-                <div class="glass-panel p-6 rounded-2xl border border-emerald-500/30 space-y-6">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                        <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs font-mono font-bold" id="simStepTag">SCENARIO 1 OF 3</span>
-                            <span class="text-slate-400 text-xs">Simulated Cyber Resilience Audit</span>
+            <!-- SECTION 8: INTERACTIVE AUDIT SIMULATOR & KNOWLEDGE CHECK -->
+            <section id="interactive-sim" class="space-y-12 scroll-mt-20">
+                
+                <!-- Audit Simulator -->
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-lg">
+                            <i class="fa-solid fa-gamepad text-xl"></i>
                         </div>
-                        <div class="text-xs text-slate-400">Score: <span id="simScore" class="text-emerald-400 font-bold text-sm">0</span> / 300</div>
+                        <div>
+                            <span class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold tracking-wider uppercase">Section 08 • Part A</span>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cyber Risk Audit Simulator</h2>
+                        </div>
                     </div>
 
-                    <div id="simBody" class="space-y-4">
-                        <!-- Dynamic Simulator Content -->
+                    <div class="glass-panel p-6 rounded-2xl border border-emerald-500/30 space-y-6">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded text-xs font-mono font-bold" id="simStepTag">SCENARIO 1 OF 3</span>
+                                <span class="text-slate-500 dark:text-slate-400 text-xs">Security Posture Audit</span>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">Score: <span id="simScore" class="text-emerald-600 dark:text-emerald-400 font-bold text-sm">0</span> / 300</div>
+                        </div>
+
+                        <div id="simBody" class="space-y-4">
+                            <!-- Dynamic Content -->
+                        </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- SECTION 10: KNOWLEDGE CHECK QUIZ -->
-            <section id="knowledge-check" class="space-y-6 scroll-mt-6">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-lg">
-                        <i class="fa-solid fa-clipboard-check text-xl"></i>
+                <!-- Knowledge Check Quiz -->
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2.5 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 rounded-lg">
+                            <i class="fa-solid fa-clipboard-check text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-amber-600 dark:text-amber-400 font-semibold tracking-wider uppercase">Section 08 • Part B</span>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Module Knowledge Check</h2>
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-xs text-amber-400 font-semibold tracking-wider uppercase">Section 10</span>
-                        <h2 class="text-2xl font-bold text-white">Module Knowledge Check</h2>
+
+                    <div id="quizContainer" class="space-y-6">
+                        <!-- Populated by JS -->
                     </div>
-                </div>
 
-                <p class="text-slate-300 leading-relaxed">
-                    Complete this final assessment to verify your comprehension of transportation management modes, analytics, and cybersecurity controls.
-                </p>
+                    <button onclick="gradeQuiz()" class="w-full bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit Knowledge Check</span>
+                    </button>
 
-                <div id="quizContainer" class="space-y-6">
-                    <!-- Populated by JS -->
-                </div>
-
-                <button onclick="gradeQuiz()" class="w-full bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span>Submit Knowledge Check</span>
-                </button>
-
-                <div id="quizResults" class="hidden glass-panel p-6 rounded-2xl border border-sky-500/50 space-y-4">
-                    <!-- Populated on grade -->
+                    <div id="quizResults" class="hidden glass-panel p-6 rounded-2xl border border-sky-500/50 space-y-4">
+                        <!-- Populated on grade -->
+                    </div>
                 </div>
             </section>
 
             <!-- FOOTER -->
-            <footer class="border-t border-slate-800 pt-8 pb-12 text-center text-xs text-slate-500 space-y-2">
+            <footer class="border-t border-slate-200 dark:border-slate-800 pt-8 pb-12 text-center text-xs text-slate-500 dark:text-slate-400 space-y-2">
                 <p>Course Module IDIS 3815: Cybersecurity Risks & Resilience in Transportation & Supply Chains</p>
                 <p>Designed for East Carolina University.</p>
             </footer>
@@ -742,81 +754,99 @@
         </main>
     </div>
 
-    <!-- JAVASCRIPT INTERACTIVE LOGIC -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         // -------------------------------------------------------------
-        // DATA: Transportation Modes (Section 3)
+        // THEME TOGGLE LOGIC
+        // -------------------------------------------------------------
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            const label = document.getElementById('themeLabel');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fa-solid fa-sun text-amber-500 text-base';
+                label.innerText = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-moon text-amber-400 text-base';
+                label.innerText = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize Theme from Storage
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.getElementById('themeIcon').className = 'fa-solid fa-sun text-amber-500 text-base';
+            document.getElementById('themeLabel').innerText = 'Light Mode';
+        }
+
+        // -------------------------------------------------------------
+        // MODAL MATRIX DATA (Section 2)
         // -------------------------------------------------------------
         const modeData = {
             truck: {
                 title: "Motor (Trucking / Highway)",
                 icon: "fa-truck",
-                color: "text-sky-400",
+                color: "text-sky-500",
                 speed: "Fast (Door-to-door)",
-                availability: "Very High (Extensive road network)",
-                dependability: "High (Subject to highway congestion)",
-                capability: "Moderate (Weight & volume constraints)",
-                frequency: "Very High",
-                fixedCost: "Low (Public highways maintained by state)",
-                variableCost: "High (Fuel, driver wages, maintenance)",
-                cyberThreat: "High (ELD hack vulnerabilities, cellular telemetry spoofing, fleet management API key theft)",
-                desc: "Motor freight is the dominant mode for domestic finished goods distribution, offering unmatched flexibility and point-to-point accessibility."
+                capacity: "Moderate (20-25 Tons / Trailer)",
+                fixedCost: "Low (Public road infrastructure)",
+                variableCost: "High (Fuel, labor, maintenance)",
+                flexibility: "Very High (Direct route access)",
+                cyberThreat: "High (ELD OBD-II firmware hacks, telematics spoofing, broker API key theft)",
+                desc: "Dominant mode for domestic freight delivery offering high accessibility and continuous real-time tracking integration."
             },
             rail: {
                 title: "Rail Freight",
                 icon: "fa-train",
-                color: "text-indigo-400",
+                color: "text-indigo-500",
                 speed: "Moderate",
-                availability: "Moderate (Restricted to track infrastructure)",
-                dependability: "Moderate to High",
-                capability: "Very High (Heavy bulk materials)",
-                frequency: "Low to Moderate",
-                fixedCost: "High (Track, locomotives, railyard ownership)",
-                variableCost: "Low (High energy efficiency per ton-mile)",
-                cyberThreat: "Moderate to High (Positive Train Control [PTC] signal manipulation, automated railyard routing hacks)",
-                desc: "Rail is ideal for long-distance movement of low-value-to-weight commodities such as coal, grain, chemicals, and intermodal containers."
+                capacity: "High (100+ Tons per Railcar)",
+                fixedCost: "High (Trackage, terminals, locomotives)",
+                variableCost: "Low (Fuel efficient per ton-mile)",
+                flexibility: "Moderate (Track node bound)",
+                cyberThreat: "Moderate to High (Positive Train Control [PTC] signal tampering, automated yard routing hacks)",
+                desc: "Ideal for long-haul bulk commodities and heavy intermodal containers over land."
             },
             water: {
                 title: "Water (Maritime / Inland)",
                 icon: "fa-ship",
-                color: "text-blue-400",
-                speed: "Very Slow",
-                availability: "Low (Restricted to ports/waterways)",
-                dependability: "Moderate (Weather/port congestion dependent)",
-                capability: "Extremely High (Ultra Large Container Vessels)",
-                frequency: "Low",
-                fixedCost: "Medium to High (Vessels & specialized cranes)",
+                color: "text-blue-500",
+                speed: "Slow",
+                capacity: "Extremely High (20,000+ TEU Vessels)",
+                fixedCost: "High (Vessels and port berth infrastructure)",
                 variableCost: "Very Low (Massive economies of scale)",
-                cyberThreat: "Critical (Port Operating System paralysis, AIS vessel tracking spoofing, automated gantry crane ransomware)",
-                desc: "Water is the backbone of global international trade, moving over 80% of world merchandise volume by weight."
+                flexibility: "Low (Restricted to deepwater ports)",
+                cyberThreat: "Critical (Port Operating System ransomware, AIS GPS tracking spoofing, automated gantry crane paralysis)",
+                desc: "The backbone of international trade moving over 80% of global physical commodity volume."
             },
             air: {
                 title: "Air Freight",
                 icon: "fa-plane",
-                color: "text-emerald-400",
+                color: "text-emerald-500",
                 speed: "Very Fast",
-                availability: "Moderate (Airport node bound)",
-                dependability: "High (Strict schedules, weather risks)",
-                capability: "Low (Strict weight and dimensional bounds)",
-                frequency: "High",
-                fixedCost: "High (Aircraft assets & terminal space)",
-                variableCost: "Extremely High (Fuel intensive)",
+                capacity: "Low (Weight and dimensional limits)",
+                fixedCost: "High (Aircraft assets & airside terminals)",
+                variableCost: "Very High (Fuel intensive)",
+                flexibility: "Moderate (Airport bounded)",
                 cyberThreat: "High (Cargo weight/balance manifest tamper, customs automated clearing portal ransomware)",
-                desc: "Air cargo accounts for under 1% of global tonnage but over 30% of global value, used primarily for high-value, time-critical, or perishable goods."
+                desc: "High-cost mode reserved for premium, time-critical, or high-value perishable merchandise."
             },
             pipeline: {
                 title: "Pipeline",
                 icon: "fa-oil-well",
-                color: "text-purple-400",
-                speed: "Very Slow (Continuous fluid flow)",
-                availability: "Low (Fixed point-to-point routes)",
-                dependability: "Extremely High (Unaffected by weather/traffic)",
-                capability: "Very Low (Limited to liquids and gases)",
-                frequency: "Continuous",
-                fixedCost: "Extremely High (Pipeline construction & rights of way)",
-                variableCost: "Extremely Low (Low labor content)",
-                cyberThreat: "Critical (Industrial Control Systems / SCADA ransomware attacks, valve pressure sensor overrides)",
-                desc: "Pipelines offer the most reliable and cost-effective means of moving liquid energy commodities over long distances."
+                color: "text-purple-500",
+                speed: "Slow Continuous Flow",
+                capacity: "Very High (Fluid/Gas throughput)",
+                fixedCost: "Extremely High (Right of way & construction)",
+                variableCost: "Extremely Low (Automated pumping)",
+                flexibility: "Very Low (Fixed point-to-point routes)",
+                cyberThreat: "Critical (SCADA/ICS ransomware attacks, remote pressure valve overrides, billing bridges)",
+                desc: "Continuous transport network dedicated to liquid fuels, natural gas, and liquid chemicals."
             }
         };
 
@@ -824,9 +854,8 @@
             const m = modeData[key];
             const display = document.getElementById('modeDetailDisplay');
 
-            // Update active button state
             document.querySelectorAll('.mode-btn').forEach(btn => {
-                btn.className = "mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+                btn.className = "mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition";
             });
             document.getElementById(`btn-${key}`).className = "mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition";
 
@@ -834,79 +863,75 @@
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center space-x-3">
                         <i class="fa-solid ${m.icon} ${m.color} text-2xl"></i>
-                        <h4 class="text-xl font-bold text-white">${m.title}</h4>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">${m.title}</h4>
                     </div>
-                    <p class="text-sm text-slate-300 leading-relaxed">${m.desc}</p>
+                    <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">${m.desc}</p>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                        <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Speed</span>
-                            <span class="text-xs font-semibold text-slate-200">${m.speed}</span>
+                        <div class="bg-white dark:bg-slate-950 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold block">Speed</span>
+                            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">${m.speed}</span>
                         </div>
-                        <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Availability</span>
-                            <span class="text-xs font-semibold text-slate-200">${m.availability}</span>
+                        <div class="bg-white dark:bg-slate-950 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold block">Capacity</span>
+                            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">${m.capacity}</span>
                         </div>
-                        <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Dependability</span>
-                            <span class="text-xs font-semibold text-slate-200">${m.dependability}</span>
+                        <div class="bg-white dark:bg-slate-950 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold block">Flexibility</span>
+                            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">${m.flexibility}</span>
                         </div>
-                        <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Capability</span>
-                            <span class="text-xs font-semibold text-slate-200">${m.capability}</span>
+                        <div class="bg-white dark:bg-slate-950 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold block">Fixed Cost</span>
+                            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">${m.fixedCost}</span>
                         </div>
-                        <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Fixed Cost Structure</span>
-                            <span class="text-xs font-semibold text-slate-200">${m.fixedCost}</span>
-                        </div>
-                        <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Variable Cost Structure</span>
-                            <span class="text-xs font-semibold text-slate-200">${m.variableCost}</span>
+                        <div class="bg-white dark:bg-slate-950 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold block">Variable Cost</span>
+                            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">${m.variableCost}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-rose-950/20 border border-rose-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                <div class="bg-rose-500/10 border border-rose-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
                     <div>
-                        <div class="flex items-center space-x-2 text-rose-400 font-bold text-xs uppercase tracking-wider mb-2">
+                        <div class="flex items-center space-x-2 text-rose-600 dark:text-rose-400 font-bold text-xs uppercase tracking-wider mb-2">
                             <i class="fa-solid fa-bug text-sm"></i>
-                            <span>Cyber Risk Footprint</span>
+                            <span>Cyber Threat Vulnerability</span>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed">${m.cyberThreat}</p>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${m.cyberThreat}</p>
                     </div>
-                    <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 text-[11px] text-slate-400">
-                        <i class="fa-solid fa-lock text-emerald-400 mr-1"></i> Mode Risk Level: <strong class="text-white uppercase">${key === 'water' || key === 'pipeline' ? 'Critical' : 'High'}</strong>
+                    <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400">
+                        <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i> Vulnerability Index: <strong class="text-slate-900 dark:text-white uppercase">${key === 'water' || key === 'pipeline' ? 'Critical' : 'High'}</strong>
                     </div>
                 </div>
             `;
         }
 
         // -------------------------------------------------------------
-        // DATA: Lifecycle Phases (Section 4)
+        // LIFECYCLE PHASES (Section 3)
         // -------------------------------------------------------------
         const phaseData = {
             1: {
-                title: "1. Network Design & Operational Strategy",
-                desc: "Determining physical node locations, optimal transport lane structures, contract terms (FOB origin vs destination), and primary modal split strategic targets.",
-                digital: "Network optimization engines (e.g., Llamasoft), strategic TMS scenario modeling modules.",
-                risk: "Manipulated network data models lead to improper facility allocation and single-point-of-failure routing vulnerabilities."
+                title: "Phase 1: Strategic Network Design",
+                desc: "Determining physical facility node locations, optimal transport lane structures, contract terms (FOB Origin vs Destination), and modal split targets.",
+                digital: "Network optimization engines (Llamasoft, Coupa), strategic TMS scenario models.",
+                risk: "Manipulated network optimization data models lead to sub-optimal facility distribution and single-point-of-failure vulnerabilities."
             },
             2: {
-                title: "2. Mode & Carrier Selection / Procurement",
-                desc: "Evaluating carrier safety records, rates, transit time reliability, and tendering contracts to preferred core carriers.",
-                digital: "Automated e-Procurement portals, EDI 204 tendering APIs, rate engine databases.",
-                risk: "Carrier portal spoofing and credential theft lead to unauthorized load acceptance and fictitious carrier fraud."
+                title: "Phase 2: Mode & Carrier Procurement",
+                desc: "Evaluating carrier safety scores, rates, service reliability, and issuing dynamic EDI 204 load tenders to preferred carrier networks.",
+                digital: "Carrier portals, automated EDI 204/211 engines, digital freight matching APIs.",
+                risk: "Carrier account spoofing and credential theft lead to unauthorized load tenders and fictitious carrier fraud."
             },
             3: {
-                title: "3. Routing, Scheduling & Load Optimization",
-                desc: "Consolidating LTL shipments into full truckloads (FTL), sequence planning, continuous move construction, and 3D pallet/trailer load optimization.",
+                title: "Phase 3: Load Building & Route Optimization",
+                desc: "Consolidating LTL shipments into full truckloads, 3D trailer pallet packing optimization, and dynamic route sequencing.",
                 digital: "TMS 3D load builders, dynamic heuristic routing algorithms.",
                 risk: "Algorithmic injection attacks altering axle weight distribution or vehicle routing parameters."
             },
             4: {
-                title: "4. Execution, Dispatch & Audit",
-                desc: "Transmitting dispatch orders to drivers, monitoring real-time location via telematics, handling exception management, and performing freight bill auditing (EDI 210).",
-                digital: "ELD telemetry, cloud tracking aggregators, automated freight invoice matching engines.",
+                title: "Phase 4: Freight Execution, Dispatch & Audit",
+                desc: "Transmitting dispatch orders, monitoring real-time cellular telematics, handling transit exceptions, and performing EDI 210 freight invoice auditing.",
+                digital: "ELD telematics, cloud tracking aggregators, automated freight invoice matching engines.",
                 risk: "Interception of EDI 210 billing feeds leading to automated fraudulent wire transfers and loss of operational tracking."
             }
         };
@@ -914,22 +939,22 @@
         function showPhase(num) {
             const p = phaseData[num];
             document.querySelectorAll('.phase-card').forEach(card => {
-                card.className = "phase-card cursor-pointer p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-sky-400 transition";
+                card.className = "phase-card cursor-pointer p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-sky-500 transition space-y-2";
             });
-            document.getElementById(`phase-tab-${num}`).className = "phase-card cursor-pointer p-4 rounded-xl bg-slate-900 border border-sky-500/50 hover:border-sky-400 transition";
+            document.getElementById(`phase-tab-${num}`).className = "phase-card cursor-pointer p-4 rounded-xl bg-white dark:bg-slate-900 border border-sky-500/50 shadow-sm hover:border-sky-500 transition space-y-2";
 
             document.getElementById('phaseContent').innerHTML = `
                 <div class="space-y-3">
-                    <h4 class="text-lg font-bold text-sky-400">${p.title}</h4>
-                    <p class="text-sm text-slate-300 leading-relaxed">${p.desc}</p>
+                    <h4 class="text-lg font-bold text-sky-600 dark:text-sky-400">${p.title}</h4>
+                    <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">${p.desc}</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs">
-                            <span class="font-bold text-indigo-400 block mb-1"><i class="fa-solid fa-laptop-code mr-1"></i> Digital Touchpoint</span>
-                            <span class="text-slate-300">${p.digital}</span>
+                        <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800 text-xs">
+                            <span class="font-bold text-indigo-600 dark:text-indigo-400 block mb-1"><i class="fa-solid fa-laptop-code mr-1"></i> Digital System</span>
+                            <span class="text-slate-700 dark:text-slate-300">${p.digital}</span>
                         </div>
-                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs">
-                            <span class="font-bold text-rose-400 block mb-1"><i class="fa-solid fa-shield-virus mr-1"></i> Cyber Vulnerability</span>
-                            <span class="text-slate-300">${p.risk}</span>
+                        <div class="bg-white dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800 text-xs">
+                            <span class="font-bold text-rose-600 dark:text-rose-400 block mb-1"><i class="fa-solid fa-shield-virus mr-1"></i> Cyber Risk</span>
+                            <span class="text-slate-700 dark:text-slate-300">${p.risk}</span>
                         </div>
                     </div>
                 </div>
@@ -937,44 +962,41 @@
         }
 
         // -------------------------------------------------------------
-        // CALCULATOR LOGIC (Section 6)
+        // CALCULATOR LOGIC (Section 5)
         // -------------------------------------------------------------
         function calculateMetrics() {
             const weight = parseFloat(document.getElementById('calcWeight').value) || 0;
             const dist = parseFloat(document.getElementById('calcDistance').value) || 0;
             const cost = parseFloat(document.getElementById('calcCost').value) || 0;
-            const dwell = parseFloat(document.getElementById('calcDwell').value) || 0;
-            const dwellRate = parseFloat(document.getElementById('calcDwellRate').value) || 0;
+            const onTime = parseFloat(document.getElementById('calcOnTime').value) || 0;
+            const delayHours = parseFloat(document.getElementById('calcDelayHours').value) || 0;
 
             const tonMiles = weight * dist;
             const costPerTonMile = tonMiles > 0 ? (cost / tonMiles) : 0;
-            
-            // Dwell penalty (assuming 2 hours free)
-            const chargeableDwell = Math.max(0, dwell - 2);
-            const dwellPenalty = chargeableDwell * dwellRate;
-
             const costPerMile = dist > 0 ? (cost / dist) : 0;
-            const totalEffectiveCost = cost + dwellPenalty;
-            const overheadPct = cost > 0 ? ((dwellPenalty / cost) * 100) : 0;
+            
+            // Penalty rate $100/hr delay after 2 free hours
+            const delayPenalty = Math.max(0, delayHours - 2) * 100;
+            const totalEffectiveCost = cost + delayPenalty;
 
             document.getElementById('resTonMiles').innerText = tonMiles.toLocaleString();
             document.getElementById('resCostTonMile').innerText = `$${costPerTonMile.toFixed(3)}`;
-            document.getElementById('resDwellPenalty').innerText = `$${dwellPenalty.toFixed(2)}`;
             document.getElementById('resCostMile').innerText = `$${costPerMile.toFixed(2)}`;
+            document.getElementById('resOTIF').innerText = `${onTime.toFixed(1)}%`;
+            document.getElementById('resDelayPenalty').innerText = `$${delayPenalty.toFixed(2)}`;
             document.getElementById('resTotalCost').innerText = `$${totalEffectiveCost.toFixed(2)}`;
-            document.getElementById('resOverhead').innerText = `+${overheadPct.toFixed(1)}%`;
 
             let insight = "";
-            if (dwellPenalty > 500) {
-                insight = `<strong>High Dwell Alert:</strong> Dwell fees add severe friction ($${dwellPenalty.toFixed(0)} penalty). In cyber incident events (e.g., port system outages), prolonged gate queues spike dwell overhead dramatically.`;
+            if (delayPenalty > 500) {
+                insight = `<strong>High Penalty Warning:</strong> Cyber delays added $${delayPenalty.toFixed(0)} in detention fines. System downtime severely inflates effective transportation costs per mile.`;
             } else {
-                insight = `<strong>Managerial Takeaway:</strong> Operational efficiency depends on minimizing unbilled dwell time and maximizing payload capacity per linehaul run.`;
+                insight = `<strong>Managerial Takeaway:</strong> Maximizing payload weight while preventing operational gate delays preserves carrier margins and maintains required OTIF targets.`;
             }
             document.getElementById('calcInsightText').innerHTML = insight;
         }
 
         // -------------------------------------------------------------
-        // SIMULATOR LOGIC (Section 9)
+        // SIMULATOR LOGIC (Section 8A)
         // -------------------------------------------------------------
         const simScenarios = [
             {
@@ -1016,9 +1038,9 @@
             if (simIndex >= simScenarios.length) {
                 document.getElementById('simBody').innerHTML = `
                     <div class="text-center py-8 space-y-4">
-                        <i class="fa-solid fa-award text-5xl text-emerald-400"></i>
-                        <h3 class="text-2xl font-bold text-white">Cyber Risk Audit Completed!</h3>
-                        <p class="text-slate-300 text-sm">Your Final Resilience Score: <strong class="text-emerald-400 font-mono text-xl">${simTotalScore} / 300</strong></p>
+                        <i class="fa-solid fa-award text-5xl text-emerald-500"></i>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Cyber Risk Audit Completed!</h3>
+                        <p class="text-slate-700 dark:text-slate-300 text-sm">Your Final Resilience Score: <strong class="text-emerald-600 dark:text-emerald-400 font-mono text-xl">${simTotalScore} / 300</strong></p>
                         <button onclick="resetSim()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-sm font-bold transition">Restart Audit Simulation</button>
                     </div>
                 `;
@@ -1029,9 +1051,9 @@
             document.getElementById('simStepTag').innerText = s.tag;
 
             let optsHtml = '';
-            s.options.forEach((opt, idx) => {
+            s.options.forEach((opt) => {
                 optsHtml += `
-                    <button onclick="answerSim(${opt.score}, '${escapeHtml(opt.feedback)}')" class="w-full text-left p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-850 transition text-xs sm:text-sm text-slate-200 font-medium">
+                    <button onclick="answerSim(${opt.score}, '${escapeHtml(opt.feedback)}')" class="w-full text-left p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 transition text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium">
                         ${opt.text}
                     </button>
                 `;
@@ -1039,8 +1061,8 @@
 
             document.getElementById('simBody').innerHTML = `
                 <div class="space-y-3">
-                    <h4 class="text-lg font-bold text-white">${s.title}</h4>
-                    <p class="text-sm text-slate-300 leading-relaxed">${s.desc}</p>
+                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">${s.title}</h4>
+                    <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">${s.desc}</p>
                     <div class="space-y-2 pt-2">${optsHtml}</div>
                 </div>
             `;
@@ -1052,8 +1074,8 @@
 
             document.getElementById('simBody').innerHTML = `
                 <div class="space-y-4 py-2">
-                    <div class="p-4 ${score === 100 ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300' : 'bg-rose-950/40 border-rose-500/40 text-rose-300'} border rounded-xl text-xs sm:text-sm">
-                        <strong class="block text-white mb-1">${score === 100 ? 'Correct Strategy Choice' : 'Sub-Optimal Decision'}</strong>
+                    <div class="p-4 ${score === 100 ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-800 dark:text-emerald-300' : 'bg-rose-500/10 border-rose-500/40 text-rose-800 dark:text-rose-300'} border rounded-xl text-xs sm:text-sm">
+                        <strong class="block text-slate-900 dark:text-white mb-1">${score === 100 ? 'Correct Strategy Choice' : 'Sub-Optimal Decision'}</strong>
                         ${feedback}
                     </div>
                     <button onclick="nextSim()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition">
@@ -1080,27 +1102,27 @@
         }
 
         // -------------------------------------------------------------
-        // QUIZ DATA & LOGIC (Section 10)
+        // QUIZ LOGIC (Section 8B)
         // -------------------------------------------------------------
         const quizQuestions = [
             {
-                q: "1. Which transportation mode exhibits the highest variable cost structure and fastest transit speed for valuable cargo?",
+                q: "1. Which primary transportation mode exhibits high speed with the highest variable cost structure for high-value merchandise?",
                 options: ["Rail Freight", "Air Freight", "Pipeline", "Water Transportation"],
                 answer: 1
             },
             {
-                q: "2. What is the primary operational consequence of cyber ransomware paralyzing a port's Terminal Operating System (TOS)?",
-                options: ["Immediate reduction in fuel tax rates", "Loss of real-time container tracking, gate congestion, and severe dwell penalties", "Automated acceleration of cargo ship travel speeds", "Instant conversion of maritime cargo to air freight"],
+                q: "2. What is the immediate operational consequence of ransomware locking a port's Terminal Operating System (TOS)?",
+                options: ["Reduction in fuel taxes", "Loss of container tracking, gate congestion, and severe dwell penalties", "Automated acceleration of cargo ships", "Conversion of maritime freight to air cargo"],
                 answer: 1
             },
             {
-                q: "3. What cybersecurity principle prevents malware from jumping from corporate business IT networks directly into industrial pipeline SCADA controllers?",
-                options: ["Increasing cellular signal strength", "Unidirectional Air-Gapping / Micro-segmentation", "Eliminating all passwords across the enterprise", "Storing freight manifests on public web pages"],
+                q: "3. Which cybersecurity defense isolates corporate business IT networks from industrial pipeline SCADA controllers?",
+                options: ["Increasing Wi-Fi router power", "Unidirectional Air-Gapping & Micro-segmentation", "Eliminating all user passwords", "Publicly posting freight manifests"],
                 answer: 1
             },
             {
-                q: "4. In transportation performance analytics, how is 'Ton-Miles' calculated?",
-                options: ["Total Freight Rate ($) divided by Driver Hours", "Shipment Weight (Tons) multiplied by Distance Travelled (Miles)", "Total Dwell Time multiplied by Speed", "Linehaul Cost divided by Fuel Gallons"],
+                q: "4. In logistics analytics, how is the primary metric 'Ton-Miles' calculated?",
+                options: ["Freight Rate divided by Driver Hours", "Cargo Weight (Tons) multiplied by Distance Travelled (Miles)", "Dwell Time multiplied by Vehicle Speed", "Linehaul Cost divided by Fuel Gallons"],
                 answer: 1
             }
         ];
@@ -1113,16 +1135,16 @@
                 let optionsHtml = '';
                 qObj.options.forEach((opt, optIdx) => {
                     optionsHtml += `
-                        <label class="flex items-center space-x-3 p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-sky-500/40 cursor-pointer transition text-xs sm:text-sm text-slate-300">
-                            <input type="radio" name="q_${idx}" value="${optIdx}" class="text-sky-500 focus:ring-sky-500 h-4 w-4 bg-slate-950 border-slate-700">
+                        <label class="flex items-center space-x-3 p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-sky-500 cursor-pointer transition text-xs sm:text-sm text-slate-800 dark:text-slate-300">
+                            <input type="radio" name="q_${idx}" value="${optIdx}" class="text-sky-500 focus:ring-sky-500 h-4 w-4">
                             <span>${opt}</span>
                         </label>
                     `;
                 });
 
                 html += `
-                    <div class="glass-panel p-5 rounded-xl border border-slate-800 space-y-3">
-                        <h4 class="text-sm font-bold text-white">${qObj.q}</h4>
+                    <div class="glass-panel p-5 rounded-xl space-y-3">
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-white">${qObj.q}</h4>
                         <div class="space-y-2">${optionsHtml}</div>
                     </div>
                 `;
@@ -1146,32 +1168,29 @@
 
             resultsDiv.innerHTML = `
                 <div class="flex items-center space-x-4">
-                    <div class="p-3 ${pct >= 75 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'} rounded-xl font-mono font-bold text-2xl">
+                    <div class="p-3 ${pct >= 75 ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/20 text-rose-600 dark:text-rose-400'} rounded-xl font-mono font-bold text-2xl">
                         ${pct}%
                     </div>
                     <div>
-                        <h4 class="text-lg font-bold text-white">${pct >= 75 ? 'Module Mastered!' : 'Review Required'}</h4>
-                        <p class="text-xs text-slate-300">You scored ${score} out of ${quizQuestions.length} correct. ${pct >= 75 ? 'You have demonstrated a strong understanding of cybersecurity risks in transportation logistics.' : 'Re-read the case studies and modal vulnerability sections above to reinforce your understanding.'}</p>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">${pct >= 75 ? 'Module Assessment Passed!' : 'Review Required'}</h4>
+                        <p class="text-xs text-slate-700 dark:text-slate-300">You scored ${score} out of ${quizQuestions.length} correct. ${pct >= 75 ? 'You have demonstrated a strong understanding of cybersecurity risks in transportation logistics.' : 'Re-read the case studies and modal vulnerability sections above to reinforce your understanding.'}</p>
                     </div>
                 </div>
             `;
 
-            // Scroll results into view smoothly
             resultsDiv.scrollIntoView({ behavior: 'smooth' });
         }
 
         // -------------------------------------------------------------
-        // INITIALIZATION & SCROLL PROGRESS
+        // INITIALIZATION
         // -------------------------------------------------------------
         window.onload = function() {
-            // Render default dynamic sections
             selectMode('truck');
             showPhase(1);
             calculateMetrics();
             renderSim();
             renderQuiz();
 
-            // Setup reading progress scroll listener
             window.addEventListener('scroll', () => {
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
