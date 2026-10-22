@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#0a0e17]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDIS-3815: Cybersecurity in Supply Chain Logistics</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font: JetBrains Mono & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#0a0e17',
+                            card: '#111827',
+                            border: '#1f293d',
+                            cyan: '#00f3ff',
+                            blue: '#3b82f6',
+                            purple: '#8b5cf6',
+                            red: '#ef4444',
+                            green: '#10b981',
+                            text: '#e2e8f0',
+                            muted: '#94a3b8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom High-Tech Grid Overlay & Scrollbar */
+        body {
+            background-color: #0a0e17;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.05) 0%, transparent 70%),
+                linear-gradient(rgba(15, 23, 42, 0.8) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(15, 23, 42, 0.8) 1px, transparent 1px);
+            background-size: 100% 100%, 32px 32px, 32px 32px;
+            color: #e2e8f0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0e17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
+        }
+
+        .cyber-border-glow {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .cyber-card {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(31, 41, 61, 0.8);
+        }
+
+        .glow-text-cyan {
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .glow-text-red {
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans overflow-hidden">
+
+    <!-- Top Navigation / High-Tech Header -->
+    <header class="h-16 border-b border-cyber-border bg-[#0a0e17]/90 backdrop-blur-md px-6 flex items-center justify-between shrink-0 z-20">
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" class="md:hidden text-cyber-muted hover:text-cyber-cyan">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-lg bg-cyber-cyan/10 border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan font-mono font-bold text-lg glow-text-cyan">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h1 class="font-mono text-sm font-bold tracking-wider text-white">IDIS-3815: SUPPLY CHAIN LOGISTICS</h1>
+                    <p class="text-xs text-cyber-cyan font-mono">SEC_DEFENSE // MODULE_PORTAL_v3.8</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Progress Bar & Controls -->
+        <div class="hidden sm:flex items-center gap-6">
+            <div class="flex flex-col items-end">
+                <div class="flex items-center gap-2 text-xs font-mono text-cyber-muted mb-1">
+                    <span>COURSE PROGRESS:</span>
+                    <span id="progress-percent" class="text-cyber-cyan font-bold">0%</span>
+                </div>
+                <div class="w-48 bg-gray-800 rounded-full h-2 overflow-hidden border border-cyber-border">
+                    <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-cyber-cyan h-full transition-all duration-300 w-0"></div>
+                </div>
+            </div>
+            <button onclick="switchTab('glossary')" class="px-3 py-1.5 rounded border border-cyber-cyan/30 bg-cyber-cyan/10 text-cyber-cyan text-xs font-mono hover:bg-cyber-cyan/20 transition flex items-center gap-2">
+                <i class="fa-solid fa-book"></i> CYBER GLOSSARY
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <div class="flex flex-1 overflow-hidden relative">
+
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="absolute md:relative z-10 w-80 h-full bg-[#0d131f] border-r border-cyber-border flex flex-col transition-transform duration-300 transform -translate-x-full md:translate-x-0">
+            <div class="p-4 border-b border-cyber-border bg-[#0a0e17]/50 flex justify-between items-center">
+                <span class="text-xs font-mono text-cyber-muted uppercase tracking-wider"><i class="fa-solid fa-layer-group text-cyber-cyan mr-2"></i> Course Curriculum</span>
+                <span id="completed-count" class="text-xs font-mono text-cyber-cyan bg-cyber-cyan/10 px-2 py-0.5 rounded border border-cyber-cyan/20">0/13 Done</span>
+            </div>
+
+            <!-- Module Navigation List -->
+            <nav class="flex-1 overflow-y-auto p-3 space-y-1" id="module-nav-list">
+                <!-- Navigation items dynamically generated by JS -->
+            </nav>
+
+            <div class="p-3 border-t border-cyber-border bg-[#0a0e17]/50">
+                <button onclick="switchTab('glossary')" class="w-full text-left px-3 py-2.5 rounded text-xs font-mono text-cyber-muted hover:text-white hover:bg-cyber-card transition flex items-center justify-between">
+                    <span><i class="fa-solid fa-book-bookmark text-cyber-purple mr-2"></i> Terminology Glossary</span>
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main View Area -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8" id="main-content">
+            <!-- Dynamic Content Injected Here -->
+        </main>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Module Database
+        const courseData = [
+            {
+                id: 1,
+                title: "Module 01. Introduction to Information Security",
+                icon: "fa-shield-cat",
+                caseTitle: "NotPetya Cyberattack on A.P. Moller - Maersk (2017)",
+                caseDetails: "In June 2017, a destructive malware outbreak known as NotPetya devastated global shipping giant Maersk. The malware entered via an infected automatic update in a Ukrainian tax accounting software (M.E.Doc) used by Maersk’s local office. NotPetya utilized the EternalBlue exploit to rapidly propagate through networks.",
+                whySucceeded: "Maersk lacked sufficient network segmentation between regional accounting systems and global operational infrastructure. Administrative credentials were shared across systems, and domain controllers lacked resilient offline backups, allowing ransomware-like wiping capabilities to destroy 45,000 PCs, 4,000 servers, and lock down 76 port terminals worldwide in hours.",
+                vulnerabilities: [
+                    "Flat network architectures with no lateral movement boundaries.",
+                    "Over-reliance on single, unverified third-party software updates.",
+                    "Inadequate offline / immutable data backup strategies.",
+                    "Lack of unified information security governance in global logistics networks."
+                ],
+                controls: [
+                    "Network Segmentation & Micro-segmentation to isolate operational tech (OT) from IT networks.",
+                    "Zero Trust Architecture (ZTA) denying lateral movement by default.",
+                    "Immutable, air-gapped backup systems with rapid disaster recovery playbooks.",
+                    "Continuous Vendor Risk Management (VRM) for software dependencies."
+                ],
+                quiz: {
+                    question: "Scenario: A regional logistics office needs to run localized accounting software. What design principle prevents a malware infection there from taking down global port operations?",
+                    options: [
+                        "Deploying antivirus software on local PCs only.",
+                        "Enforcing strict air-gapping and micro-segmentation between local office IT and core shipping operations.",
+                        "Increasing network bandwidth to handle software updates faster.",
+                        "Allowing local admins to hold global domain administrator permissions."
+                    ],
+                    correct: 1,
+                    explanation: "Micro-segmentation and strict network boundaries prevent compromised localized nodes from spreading destructive threats laterally into core enterprise and operational environments."
+                }
+            },
+            {
+                id: 2,
+                title: "Module 02. Pervasive Attack Surfaces and Controls",
+                icon: "fa-network-wired",
+                caseTitle: "Target Data Breach via HVAC Vendor Credentials (2013)",
+                caseDetails: "Attackers stole network credentials from Fazio Mechanical Services, a third-party heating/air conditioning vendor servicing Target stores. Using these credentials, hackers gained access to Target's vendor portal, moved laterally into the main corporate network, and deployed malware onto Point-of-Sale (POS) devices.",
+                whySucceeded: "The HVAC vendor had access to Target’s internal network without sufficient access restrictions or multi-factor authentication (MFA). Target’s internal network failed to isolate the vendor management portal from sensitive payment card processing environments.",
+                vulnerabilities: [
+                    "Over-privileged vendor and third-party partner credentials.",
+                    "Insecure remote access channels lacking MFA.",
+                    "Continuous reliance on peripheral supply chain partners without security audits.",
+                    "Unfiltered network connectivity between operational vendors and critical data stores."
+                ],
+                controls: [
+                    "Privileged Access Management (PAM) with strict Least Privilege access for third parties.",
+                    "Mandatory Multi-Factor Authentication (MFA) on all third-party and remote portals.",
+                    "Isolated Partner Demilitarized Zones (DMZs) preventing direct intranet access.",
+                    "Continuous automated attack surface mapping and third-party scorecards."
+                ],
+                quiz: {
+                    question: "Scenario: A third-party logistics (3PL) warehouse partner requires API access to your Inventory Management System. Which control best secures this attack surface?",
+                    options: [
+                        "Share full administrator API keys for convenience.",
+                        "Expose the internal database directly to the internet.",
+                        "Implement API gateways with scoped OAuth tokens, rate limiting, and continuous activity logging.",
+                        "Allow access over unencrypted HTTP protocol."
+                    ],
+                    correct: 2,
+                    explanation: "API Gateways enforcing scoped OAuth tokens ensure the partner only accesses data required for their role, minimizing exposure."
+                }
+            },
+            {
+                id: 3,
+                title: "Module 03. Endpoint Vulnerabilities, Attacks, and Defenses",
+                icon: "fa-desktop",
+                caseTitle: "SolarWinds Orion Supply Chain Breach (2020)",
+                caseDetails: "State-sponsored cyberthreat actors compromised SolarWinds' software build system and injected a backdoor (SUNBURST) into official updates of the Orion network management platform. Thousands of customer networks, including government agencies and global shipping enterprises, downloaded the trojanized update.",
+                whySucceeded: "The attack exploited implicit trust in digitally signed vendor software updates. Endpoint defenses trusted the signed update binary automatically, allowing the backdoor to execute silently without detection.",
+                vulnerabilities: [
+                    "Blind trust in third-party executable updates without binary inspection or behavioral analysis.",
+                    "Lack of Endpoint Detection and Response (EDR) capability to detect abnormal post-exploitation behavior.",
+                    "Weak software development lifecycle (SDLC) security at third-party vendors.",
+                    "Inadequate monitoring of outbound C2 (Command & Control) traffic from trusted management nodes."
+                ],
+                controls: [
+                    "Software Bill of Materials (SBOM) verification for all enterprise software assets.",
+                    "Behavioral Endpoint Detection and Response (EDR/XDR) with hunting rules for anomalous processes.",
+                    "Network egress filtering to block unauthorized outgoing connections from infrastructure endpoints.",
+                    "Binary integrity verification and sandboxed testing of software patches prior to deployment."
+                ],
+                quiz: {
+                    question: "Scenario: A shipping terminal management terminal downloads a signed driver patch. How should EDR react if the driver attempts to launch an outbound PowerShell connection to an unknown IP?",
+                    options: [
+                        "Allow it immediately because the file was signed.",
+                        "Flag and terminate the process based on anomalous behavioral heuristics.",
+                        "Disable the antivirus permanently.",
+                        "Ignore the traffic if it occurs outside business hours."
+                    ],
+                    correct: 1,
+                    explanation: "Modern EDR looks beyond simple signatures; anomalous behavior (like a system driver spawning out-of-bounds shell code to unknown IPs) triggers automated alerts and isolation."
+                }
+            },
+            {
+                id: 4,
+                title: "Module 04. Mobile and Embedded Device Security",
+                icon: "fa-truck-ramp-box",
+                caseTitle: "Smart Warehouse IoT Scanner & Industrial Botnet Exploit",
+                caseDetails: "Threat actors targeted automated logistics distribution centers by exploiting unpatched Android hand scanners and embedded IoT barcode gateways running outdated, default-credential firmware. The compromised devices were enlisted into a botnet to launch internal Denial-of-Service attacks and pivot into warehouse management databases.",
+                whySucceeded: "Embedded handheld devices and barcode scanners were treated as 'dumb' devices without centralized patch management, default admin passwords were never changed, and devices resided on the primary corporate Wi-Fi network.",
+                vulnerabilities: [
+                    "Hardcoded or default administrator credentials on embedded IoT and handheld units.",
+                    "Unencrypted wireless communication between handheld scanners and warehouse controllers.",
+                    "Lack of firmware updating capabilities or lifecycle management for OT devices.",
+                    "Co-mingling of IoT/OT mobile devices with sensitive corporate IT networks."
+                ],
+                controls: [
+                    "Mobile Device Management (MDM) / Enterprise Mobility Management (EMM) enforcement.",
+                    "Dedicated, isolated IoT/OT Wireless VLANs with strict firewall rules.",
+                    "Zero-touch configuration policies requiring immediate password changes upon deployment.",
+                    "Over-the-Air (OTA) cryptographically signed firmware update mechanisms."
+                ],
+                quiz: {
+                    question: "Scenario: You are deploying 500 handheld RFID scanners in a fulfillment center. What is the most critical initial security step?",
+                    options: [
+                        "Assign static public IP addresses to each device.",
+                        "Enroll devices in MDM, enforce unique credentials, and isolate them on a dedicated VLAN.",
+                        "Leave devices on default settings for easy field replacement.",
+                        "Disable encryption to maximize wireless scanning speed."
+                    ],
+                    correct: 1,
+                    explanation: "MDM enrollment paired with network isolation ensures devices are hardened, monitored, and segregated from sensitive core infrastructure."
+                }
+            },
+            {
+                id: 5,
+                title: "Module 05. Identity and Access Management (IAM)",
+                icon: "fa-key",
+                caseTitle: "Colonial Pipeline Ransomware Attack (2021)",
+                caseDetails: "DarkSide ransomware group compromised Colonial Pipeline’s operational network, causing the shutdown of a major fuel pipeline across the US East Coast. The initial breach occurred through a single leaked password for a legacy Virtual Private Network (VPN) account.",
+                whySucceeded: "The compromised VPN account lacked Multi-Factor Authentication (MFA), and the password had been exposed in an unrelated breach database. Additionally, the account belonged to a former employee and had not been deactivated during offboarding.",
+                vulnerabilities: [
+                    "Single-factor authentication (passwords alone) on internet-exposed remote access gateways.",
+                    "Inadequate account lifecycle management (active accounts belonging to former personnel).",
+                    "Credential reuse across personal and professional environments.",
+                    "Lack of Continuous Adaptive Trust / Identity Threat Detection and Response (ITDR)."
+                ],
+                controls: [
+                    "Phishing-Resistant Multi-Factor Authentication (FIDO2 / Security Keys).",
+                    "Automated Provisioning/Deprovisioning via SCIM linked to HR management systems.",
+                    "Privileged Access Management (PAM) with Just-In-Time (JIT) access granting.",
+                    "Password exposure monitoring and mandatory credential hygiene policies."
+                ],
+                quiz: {
+                    question: "Scenario: A freight coordinator leaves the company. What automated IAM practice prevents them from accessing logistics portals post-resignation?",
+                    options: [
+                        "Asking the employee to sign a non-disclosure agreement.",
+                        "Automated identity lifecycle de-provisioning integrated between HR systems and IdPs.",
+                        "Changing the password on shared team accounts manually once a month.",
+                        "Relying on employees not to log in after leaving."
+                    ],
+                    correct: 1,
+                    explanation: "Automated identity lifecycle management revokes all digital tokens and access rights immediately upon status change in HR records."
+                }
+            },
+            {
+                id: 6,
+                title: "Module 06. Infrastructure Threats & Security Monitoring",
+                icon: "fa-eye",
+                caseTitle: "Expeditors International Cyberattack (2022)",
+                caseDetails: "Major global logistics provider Expeditors International suffered a major ransomware attack that forced them to shut down global operations, including freight forwarding, customs brokerage, and distribution networks, for days.",
+                whySucceeded: "Threat actors operated undetected within the enterprise network for extended periods (high dwell time), escalating privileges and mapping internal logistics databases before executing a coordinated encryption routine across critical operational infrastructure.",
+                vulnerabilities: [
+                    "Insufficient log collection, centralization, and real-time security event correlation.",
+                    "Absence of 24/7 Security Operations Center (SOC) oversight.",
+                    "Failure to detect early reconnaissance activities such as lateral movement and credential dumping.",
+                    "Incomplete asset visibility across global branch offices and cloud environments."
+                ],
+                controls: [
+                    "Deployment of SIEM (Security Information and Event Management) with SOAR capabilities.",
+                    "24/7 SOC operations with active Threat Hunting teams.",
+                    "Behavioral network traffic analysis (NTA/NDR) for anomaly detection.",
+                    "Comprehensive audit logging for all critical supply chain databases and API endpoints."
+                ],
+                quiz: {
+                    question: "Scenario: A rogue script begins enumerating file shares across your freight tracking network at 2:00 AM. What security monitoring control mitigates this before encryption begins?",
+                    options: [
+                        "Monthly manual review of server logs.",
+                        "SOAR automated playbooks linked to SIEM alerts to isolate the originating host immediately.",
+                        "Posting a notice on the intranet board.",
+                        "Waiting for users to report slow network performance."
+                    ],
+                    correct: 1,
+                    explanation: "SIEM/SOAR automated response playbooks can detect unusual high-speed scanning and isolate compromised machines in real time without human delay."
+                }
+            },
+            {
+                id: 7,
+                title: "Module 07. Infrastructure Security in Supply Chain",
+                icon: "fa-industry",
+                caseTitle: "Oldsmar Water Treatment ICS/SCADA Attack (2021)",
+                caseDetails: "An unauthorized intruder accessed the SCADA control system of a water treatment facility via TeamViewer software and attempted to increase sodium hydroxide levels to dangerous quantities.",
+                whySucceeded: "The remote access tool (TeamViewer) was installed on an operational technology (OT) computer connected directly to the control network, protected by weak passwords, lacking MFA, and sharing a single operating system account across operators.",
+                vulnerabilities: [
+                    "Mixing Operational Technology (OT/ICS) networks with commodity IT remote desktop software.",
+                    "Shared credentials without accountability or multi-factor authentication.",
+                    "Absence of unidirectional security gateways (data diodes) protecting physical control loops.",
+                    "Lack of out-of-band physical fallback overrides on safety-critical physical processes."
+                ],
+                controls: [
+                    "Purdue Model implementation for industrial control system network segmentation.",
+                    "Deployment of Unidirectional Data Diodes for monitoring OT environments safely.",
+                    "Removal of unauthorized remote access tools on operational workstations.",
+                    "Hardened jump-boxes with strict MFA for any legitimate OT remote maintenance."
+                ],
+                quiz: {
+                    question: "Scenario: You manage a fleet of automated robotic sorters in a distribution hub. How should the control systems (PLC/SCADA) be isolated from corporate email servers?",
+                    options: [
+                        "Connect both to the same Wi-Fi network for easy troubleshooting.",
+                        "Strictly segment OT networks using the Purdue Model architecture with firewalls and industrial jump hosts.",
+                        "Use an unmanaged network switch.",
+                        "Rely on software passwords stored in an unencrypted Excel sheet."
+                    ],
+                    correct: 1,
+                    explanation: "Applying the Purdue Model ensures physical operational networks (OT) are distinctly isolated from general enterprise IT systems."
+                }
+            },
+            {
+                id: 8,
+                title: "Module 08. Wireless Network Attacks and Defenses",
+                icon: "fa-wifi",
+                caseTitle: "Rogue Access Point & Wi-Fi Eavesdropping at Freight Hubs",
+                caseDetails: "Cybercriminals deployed 'Evil Twin' rogue access points imitating official port facility Wi-Fi networks. Unaware truck drivers and logistics agents connected, allowing attackers to perform Man-in-the-Middle (MitM) attacks, intercepting shipping manifests and credential tokens.",
+                whySucceeded: "The port terminal lacked Wireless Intrusion Prevention Systems (WIPS) and allowed open unencrypted Wi-Fi access for contractor sign-ins without certificate-based device authentication.",
+                vulnerabilities: [
+                    "Use of legacy WPA/WPA2-PSK encryption with shared passphrase across field staff.",
+                    "Lack of WIPS to detect rogue AP spoofing and rogue signal broadcasting.",
+                    "Unencrypted HTTP communication for logistics manifest tracking applications.",
+                    "Missing 802.1X EAP-TLS enterprise certificate authentication for wireless clients."
+                ],
+                controls: [
+                    "WPA3 Enterprise authentication utilizing 802.1X with hardware-bound certificates.",
+                    "Continuous Wireless Intrusion Prevention System (WIPS) monitoring.",
+                    "Enforcement of HTTPS/TLS 1.3 encryption across all internal web services.",
+                    "Forced client VPN usage over untrusted Wi-Fi environments."
+                ],
+                quiz: {
+                    question: "Scenario: Warehouse tablet devices need to communicate with a Central Inventory system via Wi-Fi. What is the most secure authentication protocol?",
+                    options: [
+                        "WPA2-Personal with a shared password written on the wall.",
+                        "Open Wi-Fi network with a hidden SSID.",
+                        "WPA3-Enterprise using 802.1X authentication and mutual client/server TLS digital certificates.",
+                        "MAC address filtering on an unencrypted network."
+                    ],
+                    correct: 2,
+                    explanation: "WPA3-Enterprise with 802.1X digital certificates ensures that only verified enterprise devices can associate with the wireless network, immune to passphrase cracking."
+                }
+            },
+            {
+                id: 9,
+                title: "Module 09. Cloud and Virtualization Security",
+                icon: "fa-cloud",
+                caseTitle: "FedEx / Bongo International Customer Data Exposure (2018)",
+                caseDetails: "Over 119,000 scanned customer records, including passports and driver's licenses from global delivery service customers, were found exposed on a publicly accessible Amazon S3 cloud storage bucket configured without access controls.",
+                whySucceeded: "Cloud storage buckets were misconfigured during legacy system integration, leaving default 'Public Read' permissions enabled without automated cloud security posture management (CSPM) to flag the exposure.",
+                vulnerabilities: [
+                    "Publicly exposed cloud storage buckets and database snapshots.",
+                    "Inadequate Identity and Access Management (IAM) cloud bucket policies.",
+                    "Lack of automated continuous Cloud Security Posture Management (CSPM).",
+                    "Shadow IT infrastructure created outside corporate IT oversight."
+                ],
+                controls: [
+                    "Automated CSPM tools to audit and remediate misconfigurations continuously.",
+                    "Implementation of AWS 'Block Public Access' at the organization root level.",
+                    "Client-side encryption of data prior to uploading to cloud repositories.",
+                    "Infrastructure as Code (IaC) security scanning before cloud resource deployment."
+                ],
+                quiz: {
+                    question: "Scenario: A cloud engineer creates an Azure Blob storage container to hold bill-of-lading documents. How do you guarantee sensitive files are not exposed publicly?",
+                    options: [
+                        "Hope the URL remains secret.",
+                        "Enforce organizational policies that block public access by default and run continuous CSPM scans.",
+                        "Store files in plaintext without access keys.",
+                        "Use public links but give them long random file names."
+                    ],
+                    correct: 1,
+                    explanation: "Organizational guardrails that disable public access at the account level combined with CSPM tooling proactively prevent unintended data exposures."
+                }
+            },
+            {
+                id: 10,
+                title: "Module 10. Vulnerability Management in Supply Chain",
+                icon: "fa-bug",
+                caseTitle: "Apache Log4j (Log4Shell) Vulnerability in Freight Tracking Software (2021)",
+                caseDetails: "A critical Remote Code Execution (RCE) flaw in the ubiquitously used Apache Log4j Java logging library exposed thousands of enterprise supply chain applications globally, enabling remote unauthenticated command execution.",
+                whySucceeded: "Organizations lacked visibility into their software supply chain, not knowing which proprietary or commercial off-the-shelf (COTS) tracking tools contained the vulnerable library.",
+                vulnerabilities: [
+                    "Lack of Software Bill of Materials (SBOM) detailing nested open-source dependencies.",
+                    "Infrequent or reactive vulnerability scanning schedules.",
+                    "Slow patch deployment lifecycles for critical zero-day threats.",
+                    "Absence of Web Application Firewalls (WAF) to block virtual patch exploits."
+                ],
+                controls: [
+                    "Mandatory Software Bill of Materials (SBOM) for all acquired software.",
+                    "Automated Continuous Vulnerability Assessment & Patch Management (VAM).",
+                    "Web Application Firewalls (WAF) for immediate virtual patching.",
+                    "Risk-prioritized patching based on Exploit Prediction Scoring System (EPSS)."
+                ],
+                quiz: {
+                    question: "Scenario: A zero-day vulnerability is announced in a component used by your logistics planning tool. How do you instantly verify if your enterprise is impacted?",
+                    options: [
+                        "Call every developer personally.",
+                        "Query your central Software Bill of Materials (SBOM) repository for the impacted component and version.",
+                        "Reinstall the operating system on all servers.",
+                        "Wait for a vendor email notification."
+                    ],
+                    correct: 1,
+                    explanation: "An SBOM provides a complete index of all software dependencies, allowing instant queries when new vulnerabilities are disclosed."
+                }
+            },
+            {
+                id: 11,
+                title: "Module 11. Incident Preparation & Investigation",
+                icon: "fa-floppy-disk",
+                caseTitle: "Norsk Hydro Ransomware Incident & Forensics Response (2019)",
+                caseDetails: "Aluminum supplier Norsk Hydro was struck by LockerGoga ransomware, locking global production facilities. Norsk Hydro responded with high transparency, isolating systems, switching to manual operations, and using forensically preserved logs to recover efficiently without paying ransom.",
+                whySucceeded: "The incident response succeeded (in terms of recovery) because Norsk Hydro had well-rehearsed manual operational playbooks, isolated backup images, and preserved digital forensic evidence for analysis.",
+                vulnerabilities: [
+                    "Inadequate incident response (IR) playbooks tailored for supply chain halts.",
+                    "Lack of centralized, tamper-proof forensic logging.",
+                    "Unrehearsed communication strategies during crisis scenarios.",
+                    "Failure to perform regular table-top exercises involving operational executives."
+                ],
+                controls: [
+                    "Comprehensive Incident Response (IR) plans with dedicated supply chain continuity playbooks.",
+                    "Immutable, write-once-read-many (WORM) central log repositories.",
+                    "Regular multi-stakeholder incident tabletop exercises.",
+                    "Digital Forensics & Incident Response (DFIR) retainer contracts with specialized firms."
+                ],
+                quiz: {
+                    question: "Scenario: Your automated port crane systems are suspected of hosting malware. What is the immediate first step in digital forensic preservation?",
+                    options: [
+                        "Power off the machines immediately to destroy volatile memory.",
+                        "Isolate the systems from the network, capture volatile RAM, and preserve forensic disk images before altering power states.",
+                        "Overwrite log files to clean the system.",
+                        "Continue operations normally until the weekend."
+                    ],
+                    correct: 1,
+                    explanation: "Proper DFIR requires network isolation while maintaining RAM states to extract live malware artifacts and preserve chain of custody."
+                }
+            },
+            {
+                id: 12,
+                title: "Module 12. Oversight and Operations in Supply Chain",
+                icon: "fa-clipboard-check",
+                caseTitle: "Kojima Industries Cyberattack / Toyota Operations Halt (2022)",
+                caseDetails: "Kojima Industries, a key plastic component supplier for Toyota, suffered a major ransomware breach. As a result of Kojima losing production visibility, Toyota was forced to halt operations across all 14 of its Japanese manufacturing plants, halting production of ~13,000 vehicles.",
+                whySucceeded: "Kojima lacked strong network security controls and vulnerability patching, creating a single point of failure (SPOF) for Toyota's Just-In-Time (JIT) manufacturing strategy.",
+                vulnerabilities: [
+                    "Single points of failure within tight Just-In-Time (JIT) supply chains.",
+                    "Lack of mandatory security baseline requirements for Tier-1 and Tier-2 suppliers.",
+                    "Inadequate auditing of supplier operational resilience.",
+                    "Information sharing silos between primary manufacturers and component vendors."
+                ],
+                controls: [
+                    "Mandatory cybersecurity compliance frameworks (e.g., NIST SP 800-161) for all vendors.",
+                    "Continuous third-party risk monitoring and automated risk scoring.",
+                    "Requirement of operational redundancy and manual operational contingency plans.",
+                    "Establishment of joint Threat Intelligence Sharing programs across suppliers."
+                ],
+                quiz: {
+                    question: "Scenario: You manage a JIT automotive manufacturing line. How do you prevent a small supplier’s cyber breach from stopping your entire production line?",
+                    options: [
+                        "Mandate security baselines and require buffer inventory reserves alongside supplier risk audits.",
+                        "Trust that small suppliers won't be targeted.",
+                        "Fines suppliers after a breach occurs.",
+                        "Eliminate all supplier oversight to save costs."
+                    ],
+                    correct: 0,
+                    explanation: "Combining strict cybersecurity requirements with strategic buffer stock mitigates both digital exposure and physical operational halt risks."
+                }
+            },
+            {
+                id: 13,
+                title: "Module 13. Information Security Management & Compliance",
+                icon: "fa-gavel",
+                caseTitle: "Software Supply Chain Compliance & Framework Failures",
+                caseDetails: "A major defense logistics contractor failed to adhere to NIST SP 800-171 cybersecurity requirements, leading to unauthorized exfiltration of sensitive military transport schedules by foreign intelligence entities. The firm faced severe Department of Justice False Claims Act penalties.",
+                whySucceeded: "The company treated cybersecurity compliance as a 'check-the-box' exercise, utilizing static self-assessments without continuous enforcement of security controls or executive accountability.",
+                vulnerabilities: [
+                    "Static, annual 'paper-only' security self-assessments.",
+                    "Lack of alignment with structured cybersecurity frameworks (NIST CSF, ISO/IEC 27001).",
+                    "Absence of continuous compliance verification and executive governance oversight.",
+                    "Ignoring regulatory mandates (CMMC, NIS2, ISO 28000)."
+                ],
+                controls: [
+                    "Adoption of ISO 28000 (Security Management Systems for Supply Chain) & NIST SP 800-161.",
+                    "Automated, continuous compliance monitoring platforms.",
+                    "Executive Security Steering Committees with direct board reporting.",
+                    "Third-party independent cybersecurity audits and penetration testing."
+                ],
+                quiz: {
+                    question: "Scenario: Which framework is specifically designed to manage cybersecurity risks throughout enterprise supply chain relationships?",
+                    options: [
+                        "PCI-DSS (Payment Card Industry standard only)",
+                        "NIST SP 800-161 (Cybersecurity Supply Chain Risk Management / C-SCRM)",
+                        "GDPR (Data Privacy Directive only)",
+                        "IEEE 802.11 Wireless Standard"
+                    ],
+                    correct: 1,
+                    explanation: "NIST SP 800-161 explicitly provides guidance for identifying, assessing, and mitigating cybersecurity risks across information supply chains."
+                }
+            }
+        ];
+
+        // Glossary Terms Database
+        const glossaryData = [
+            { term: "Air-Gapping", def: "A security measure that involves isolating a computer or network and ensuring that it is physically disconnected from any other networks, including the internet." },
+            { term: "APT (Advanced Persistent Threat)", def: "A stealthy threat actor, typically a state or state-sponsored group, that gains unauthorized access to a computer network and remains undetected for an extended period." },
+            { term: "C-SCRM", def: "Cybersecurity Supply Chain Risk Management—a systematic process for managing cyber risks associated with acquiring third-party products and services." },
+            { term: "CVE (Common Vulnerabilities and Exposures)", def: "A public list of standardized identifiers for publicly known cybersecurity vulnerabilities." },
+            { term: "DFIR (Digital Forensics & Incident Response)", def: "A specialized field of cybersecurity focused on the identification, investigation, containment, and remediation of cyber incidents." },
+            { term: "EDR (Endpoint Detection and Response)", def: "An integrated endpoint security solution that combines real-time continuous monitoring and data collection with rules-based automated response." },
+            { term: "IAM (Identity and Access Management)", def: "A framework of policies and technologies ensuring that the right users have the appropriate access to technology resources." },
+            { term: "ICS/SCADA", def: "Industrial Control Systems / Supervisory Control and Data Acquisition architectures used to monitor and automate industrial processes like port cranes and water utilities." },
+            { term: "Least Privilege", def: "The security principle that end users and systems should be granted the minimum level of access—and permissions—necessary to perform their official duties." },
+            { term: "MFA (Multi-Factor Authentication)", def: "An authentication method that requires the user to provide two or more verification factors to gain access to a resource." },
+            { term: "Micro-segmentation", def: "A security technique that enables fine-grained security zones to be created in data centers and cloud environments to isolate workloads and limit lateral movement." },
+            { term: "OT (Operational Technology)", def: "Hardware and software that detects or causes a change through the direct monitoring and/or control of physical devices, processes, and events in the enterprise." },
+            { term: "PAM (Privileged Access Management)", def: "Identities and systems management focused on securing, controlling, and monitoring elevated access to critical assets." },
+            { term: "Purdue Model", def: "A structural model for industrial control system architecture that defines network segmentation zones between physical equipment and corporate IT networks." },
+            { term: "Ransomware", def: "A type of malicious software designed to block access to a computer system or files until a sum of money is paid." },
+            { term: "SBOM (Software Bill of Materials)", def: "A formal, machine-readable inventory of software components, dependencies, and hierarchical relationships within an application." },
+            { term: "SIEM (Security Information and Event Management)", def: "A security solution that aggregates and analyzes log data from across an enterprise to detect potential threats and compliance issues." },
+            { term: "SOAR (Security Orchestration, Automation, and Response)", def: "Technologies that enable organizations to collect threat indicators and automate response playbooks without human intervention." },
+            { term: "WIPS (Wireless Intrusion Prevention System)", def: "A security hardware/software tool that monitors the radio spectrum for rogue access points, unauthorized wireless connections, and RF attacks." },
+            { term: "Zero Trust Architecture (ZTA)", def: "A cybersecurity strategy built on the principle of 'Never Trust, Always Verify', requiring strict identity verification for every device and user attempting to access resources." }
+        ];
+
+        // State Tracking
+        let currentModuleIndex = 0;
+        let completedModules = new Set();
+        let userAnswers = {};
+
+        // DOM Loaded Init
+        window.onload = function() {
+            renderSidebar();
+            renderModule(0);
+            updateProgress();
+
+            // Mobile sidebar toggle logic
+            document.getElementById('sidebar-toggle').addEventListener('click', function() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('-translate-x-full');
+            });
+        };
+
+        // Render Sidebar Navigation
+        function renderSidebar() {
+            const list = document.getElementById('module-nav-list');
+            list.innerHTML = '';
+
+            courseData.forEach((mod, index) => {
+                const isCompleted = completedModules.has(mod.id);
+                const isActive = currentModuleIndex === index;
+
+                const button = document.createElement('button');
+                button.className = `w-full text-left p-2.5 rounded-lg text-xs font-mono transition flex items-center justify-between mb-1 ${
+                    isActive 
+                        ? 'bg-cyber-cyan/15 text-cyber-cyan border border-cyber-cyan/40 glow-text-cyan' 
+                        : 'text-cyber-muted hover:bg-cyber-card hover:text-white'
+                }`;
+
+                button.onclick = () => {
+                    renderModule(index);
+                    // Close mobile sidebar on selection
+                    document.getElementById('sidebar').classList.add('-translate-x-full');
+                };
+
+                button.innerHTML = `
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+                        <i class="fa-solid ${mod.icon} text-sm ${isActive ? 'text-cyber-cyan' : 'text-cyber-muted'}"></i>
+                        <span class="truncate">${mod.title}</span>
+                    </div>
+                    ${isCompleted ? '<i class="fa-solid fa-circle-check text-cyber-green ml-1"></i>' : ''}
+                `;
+
+                list.appendChild(button);
+            });
+        }
+
+        // Render Specific Module
+        function renderModule(index) {
+            currentModuleIndex = index;
+            renderSidebar();
+
+            const mod = courseData[index];
+            const main = document.getElementById('main-content');
+
+            main.innerHTML = `
+                <!-- Module Header -->
+                <div class="border-b border-cyber-border pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 text-xs font-mono text-cyber-cyan mb-1">
+                            <span>IDIS-3815 // COURSE MODULE ${String(mod.id).padStart(2, '0')}</span>
+                        </div>
+                        <h2 class="text-xl md:text-2xl font-bold font-mono text-white tracking-wide">${mod.title}</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="navigateModule(-1)" ${index === 0 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-3 py-1.5 rounded border border-cyber-border bg-cyber-card text-xs font-mono hover:border-cyber-cyan transition">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> PREV
+                        </button>
+                        <button onclick="navigateModule(1)" ${index === courseData.length - 1 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-3 py-1.5 rounded border border-cyber-border bg-cyber-card text-xs font-mono hover:border-cyber-cyan transition">
+                            NEXT <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Case Study Box -->
+                <div class="cyber-card rounded-xl p-5 border-l-4 border-l-cyber-red">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-cyber-red/10 border border-cyber-red/30 text-cyber-red font-semibold uppercase">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> Real-World Cyber Incident
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-mono">${mod.caseTitle}</h3>
+                    <p class="text-sm text-cyber-text leading-relaxed mb-4">${mod.caseDetails}</p>
+                    <div class="p-3 bg-cyber-bg/80 rounded-lg border border-cyber-border">
+                        <h4 class="text-xs font-mono text-cyber-cyan uppercase font-bold mb-1"><i class="fa-solid fa-bug mr-1"></i> Root Cause & Exploit Vectors:</h4>
+                        <p class="text-xs text-cyber-muted leading-relaxed">${mod.whySucceeded}</p>
+                    </div>
+                </div>
+
+                <!-- Content Grid: Vulnerabilities & Controls -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Vulnerabilities Card -->
+                    <div class="cyber-card rounded-xl p-5">
+                        <h3 class="text-sm font-mono text-cyber-red font-bold uppercase mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-virus"></i> Common Vulnerabilities
+                        </h3>
+                        <ul class="space-y-2.5">
+                            ${mod.vulnerabilities.map(v => `
+                                <li class="flex items-start gap-2.5 text-xs text-cyber-text">
+                                    <i class="fa-solid fa-xmark text-cyber-red mt-0.5"></i>
+                                    <span>${v}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Defense Controls Card -->
+                    <div class="cyber-card rounded-xl p-5">
+                        <h3 class="text-sm font-mono text-cyber-green font-bold uppercase mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-lock"></i> Mitigation Controls & Strategies
+                        </h3>
+                        <ul class="space-y-2.5">
+                            ${mod.controls.map(c => `
+                                <li class="flex items-start gap-2.5 text-xs text-cyber-text">
+                                    <i class="fa-solid fa-check text-cyber-green mt-0.5"></i>
+                                    <span>${c}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Interactive Activity Section -->
+                <div class="cyber-card rounded-xl p-5 border border-cyber-cyan/30">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-mono text-cyber-cyan font-bold uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-vial"></i> Interactive Scenario Knowledge Assessment
+                        </h3>
+                        <span class="text-xs font-mono text-cyber-muted">Instant Evaluation</span>
+                    </div>
+
+                    <p class="text-sm font-semibold text-white mb-4">${mod.quiz.question}</p>
+
+                    <div class="space-y-2 mb-4" id="quiz-options">
+                        ${mod.quiz.options.map((opt, i) => `
+                            <button onclick="submitAnswer(${index}, ${i})" class="w-full text-left p-3 rounded-lg bg-cyber-bg border border-cyber-border hover:border-cyber-cyan/50 text-xs text-cyber-text transition flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <i class="fa-regular fa-circle text-cyber-muted group-hover:text-cyber-cyan"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="quiz-feedback" class="hidden p-3 rounded-lg text-xs leading-relaxed font-mono"></div>
+                </div>
+            `;
+
+            // If user already answered this module, display their answer state
+            if (userAnswers[index] !== undefined) {
+                showQuizResult(index, userAnswers[index]);
+            }
+        }
+
+        // Handle Quiz Submissions
+        function submitAnswer(modIndex, selectedIndex) {
+            userAnswers[modIndex] = selectedIndex;
+            const mod = courseData[modIndex];
+
+            if (selectedIndex === mod.quiz.correct) {
+                completedModules.add(mod.id);
+            }
+
+            updateProgress();
+            renderSidebar();
+            showQuizResult(modIndex, selectedIndex);
+        }
+
+        // Render Feedback for Quiz
+        function showQuizResult(modIndex, selectedIndex) {
+            const mod = courseData[modIndex];
+            const feedbackBox = document.getElementById('quiz-feedback');
+            const optionsBox = document.getElementById('quiz-options');
+
+            if (!feedbackBox || !optionsBox) return;
+
+            const isCorrect = selectedIndex === mod.quiz.correct;
+
+            // Update Option Styling
+            optionsBox.innerHTML = mod.quiz.options.map((opt, i) => {
+                let btnStyle = 'bg-cyber-bg border-cyber-border text-cyber-text';
+                let icon = '<i class="fa-regular fa-circle text-cyber-muted"></i>';
+
+                if (i === mod.quiz.correct) {
+                    btnStyle = 'bg-cyber-green/15 border-cyber-green text-cyber-green font-bold';
+                    icon = '<i class="fa-solid fa-circle-check text-cyber-green"></i>';
+                } else if (i === selectedIndex && !isCorrect) {
+                    btnStyle = 'bg-cyber-red/15 border-cyber-red text-cyber-red font-bold';
+                    icon = '<i class="fa-solid fa-circle-xmark text-cyber-red"></i>';
+                }
+
+                return `
+                    <div class="w-full text-left p-3 rounded-lg border ${btnStyle} text-xs flex items-center justify-between">
+                        <span>${opt}</span>
+                        ${icon}
+                    </div>
+                `;
+            }).join('');
+
+            // Display Feedback Box
+            feedbackBox.classList.remove('hidden');
+            if (isCorrect) {
+                feedbackBox.className = 'p-3 rounded-lg text-xs leading-relaxed font-mono bg-cyber-green/10 border border-cyber-green/30 text-cyber-green';
+                feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> <strong>CORRECT EXECUTION:</strong> ${mod.quiz.explanation}`;
+            } else {
+                feedbackBox.className = 'p-3 rounded-lg text-xs leading-relaxed font-mono bg-cyber-red/10 border border-cyber-red/30 text-cyber-red';
+                feedbackBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> <strong>SECURITY BREACH:</strong> Incorrect protocol selected. ${mod.quiz.explanation}`;
+            }
+        }
+
+        // Navigation controls
+        function navigateModule(direction) {
+            const newIndex = currentModuleIndex + direction;
+            if (newIndex >= 0 && newIndex < courseData.length) {
+                renderModule(newIndex);
+            }
+        }
+
+        // Progress Calculation
+        function updateProgress() {
+            const percent = Math.round((completedModules.size / courseData.length) * 100);
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('completed-count').innerText = `${completedModules.size}/${courseData.length} Done`;
+        }
+
+        // Glossary & Interface Tab Switcher
+        function switchTab(tab) {
+            const main = document.getElementById('main-content');
+
+            if (tab === 'glossary') {
+                renderSidebar();
+                main.innerHTML = `
+                    <div class="border-b border-cyber-border pb-4 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs font-mono text-cyber-cyan">REFERENCE MATRIX</span>
+                            <h2 class="text-2xl font-bold font-mono text-white tracking-wide"><i class="fa-solid fa-book-bookmark text-cyber-purple mr-2"></i> Supply Chain Cybersecurity Glossary</h2>
+                        </div>
+                        <div class="w-full sm:w-64">
+                            <input type="text" id="glossary-search" oninput="filterGlossary()" placeholder="Search terms..." class="w-full px-3 py-1.5 rounded bg-cyber-card border border-cyber-border text-xs font-mono text-white focus:outline-none focus:border-cyber-cyan">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4" id="glossary-grid">
+                        <!-- Glossary Items populated by JS -->
+                    </div>
+                `;
+                renderGlossaryItems(glossaryData);
+            }
+        }
+
+        // Render Glossary Grid
+        function renderGlossaryItems(items) {
+            const grid = document.getElementById('glossary-grid');
+            if (!grid) return;
+
+            grid.innerHTML = items.map(item => `
+                <div class="cyber-card rounded-xl p-4 border border-cyber-border">
+                    <h3 class="text-sm font-mono font-bold text-cyber-cyan mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-terminal text-xs text-cyber-purple"></i> ${item.term}
+                    </h3>
+                    <p class="text-xs text-cyber-muted leading-relaxed">${item.def}</p>
+                </div>
+            `).join('');
+        }
+
+        // Filter Glossary Items
+        function filterGlossary() {
+            const query = document.getElementById('glossary-search').value.toLowerCase();
+            const filtered = glossaryData.filter(g => 
+                g.term.toLowerCase().includes(query) || g.def.toLowerCase().includes(query)
+            );
+            renderGlossaryItems(filtered);
+        }
+    </script>
+</body>
+</html>
